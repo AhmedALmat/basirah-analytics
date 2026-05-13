@@ -1,17 +1,314 @@
 <!DOCTYPE html>
-<html>
+<html lang="ar">
 <head>
-  <title>متجر تجريبي</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>متجر Demo | Basirah AI</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      direction: rtl;
+      background: #f8fafc;
+      color: #0f172a;
+    }
+
+    .navbar {
+      background: #0f172a;
+      color: white;
+      padding: 20px 50px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 26px;
+      font-weight: bold;
+    }
+
+    .nav-links a {
+      color: #cbd5e1;
+      margin-right: 22px;
+      text-decoration: none;
+      font-size: 15px;
+    }
+
+    .hero {
+      padding: 80px 50px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: center;
+      background: linear-gradient(135deg, #e0f2fe, #f8fafc);
+    }
+
+    .hero h1 {
+      font-size: 46px;
+      margin: 0 0 20px;
+      line-height: 1.3;
+    }
+
+    .hero p {
+      color: #475569;
+      font-size: 19px;
+      line-height: 1.9;
+      margin-bottom: 30px;
+    }
+
+    .hero-card {
+      background: white;
+      padding: 35px;
+      border-radius: 24px;
+      box-shadow: 0 12px 35px rgba(15, 23, 42, 0.12);
+      text-align: center;
+    }
+
+    .product-img {
+      height: 230px;
+      background: linear-gradient(135deg, #0f172a, #334155);
+      border-radius: 20px;
+      margin-bottom: 25px;
+    }
+
+    .price {
+      font-size: 30px;
+      font-weight: bold;
+      color: #16a34a;
+      margin: 15px 0;
+    }
+
+    button {
+      border: none;
+      cursor: pointer;
+      border-radius: 12px;
+      padding: 14px 24px;
+      font-weight: bold;
+      font-size: 16px;
+      margin: 6px;
+    }
+
+    .btn-primary {
+      background: #22c55e;
+      color: white;
+    }
+
+    .btn-dark {
+      background: #0f172a;
+      color: white;
+    }
+
+    .btn-light {
+      background: #e2e8f0;
+      color: #0f172a;
+    }
+
+    .section {
+      padding: 65px 50px;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .section h2 {
+      text-align: center;
+      font-size: 34px;
+      margin-bottom: 40px;
+    }
+
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 24px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+      border: 1px solid #e5e7eb;
+    }
+
+    .fake-img {
+      height: 160px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #cbd5e1, #f1f5f9);
+      margin-bottom: 18px;
+    }
+
+    .card h3 {
+      margin: 0 0 10px;
+    }
+
+    .card p {
+      color: #64748b;
+      line-height: 1.7;
+    }
+
+    .checkout-box {
+      background: white;
+      border-radius: 22px;
+      padding: 35px;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+      max-width: 700px;
+      margin: auto;
+    }
+
+    .input {
+      width: 100%;
+      padding: 14px;
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      margin-bottom: 14px;
+      font-size: 15px;
+    }
+
+    .confusing-text {
+      color: #2563eb;
+      font-weight: bold;
+      margin-top: 18px;
+      cursor: default;
+    }
+
+    .footer {
+      background: #0f172a;
+      color: #cbd5e1;
+      padding: 30px;
+      text-align: center;
+      margin-top: 40px;
+    }
+
+    @media (max-width: 800px) {
+      .hero {
+        grid-template-columns: 1fr;
+        padding: 50px 24px;
+      }
+
+      .hero h1 {
+        font-size: 34px;
+      }
+
+      .section {
+        padding: 45px 24px;
+      }
+
+      .navbar {
+        padding: 18px 24px;
+      }
+
+      .nav-links {
+        display: none;
+      }
+    }
+  </style>
 </head>
+
 <body>
-  <h1>متجر الأحذية</h1>
 
-  <p>هذا متجر تجريبي لاختبار منصة بصيرة.</p>
+  <div class="navbar">
+    <div class="logo">متجر Demo</div>
 
-  <button>أضف إلى السلة</button>
-  <button>اشتر الآن</button>
-  <button>تواصل معنا</button>
+    <div class="nav-links">
+      <a href="#products">المنتجات</a>
+      <a href="#checkout">الدفع</a>
+      <a href="#contact">تواصل معنا</a>
+    </div>
+  </div>
+
+  <section class="hero">
+    <div>
+      <h1>منتجات تقنية ذكية لحياتك اليومية</h1>
+      <p>
+        متجر تجريبي مصمم لاختبار Basirah AI. جرّب الضغط على الأزرار،
+        الانتقال بين الأقسام، أو الضغط على نصوص غير قابلة للنقر حتى ترى كيف تسجل المنصة السلوك.
+      </p>
+
+      <button class="btn-primary">أضف إلى السلة</button>
+      <button class="btn-dark">اشتر الآن</button>
+      <button class="btn-light">تواصل معنا</button>
+    </div>
+
+    <div class="hero-card">
+      <div class="product-img"></div>
+      <h2>ساعة ذكية Pro</h2>
+      <p>تتبع النشاط، النوم، والتنبيهات اليومية بتصميم أنيق.</p>
+      <div class="price">299 ريال</div>
+      <button class="btn-primary">أضف إلى السلة</button>
+      <button class="btn-dark">اشتر الآن</button>
+    </div>
+  </section>
+
+  <section class="section" id="products">
+    <h2>منتجات مميزة</h2>
+
+    <div class="products">
+
+      <div class="card">
+        <div class="fake-img"></div>
+        <h3>سماعة لاسلكية</h3>
+        <p>صوت نقي وبطارية تدوم طويلًا للاستخدام اليومي.</p>
+        <button class="btn-primary">أضف إلى السلة</button>
+        <button class="btn-dark">اشتر الآن</button>
+      </div>
+
+      <div class="card">
+        <div class="fake-img"></div>
+        <h3>شاحن سريع</h3>
+        <p>شاحن USB-C سريع مناسب للجوالات والأجهزة اللوحية.</p>
+        <button class="btn-primary">أضف إلى السلة</button>
+        <button class="btn-dark">اشتر الآن</button>
+      </div>
+
+      <div class="card">
+        <div class="fake-img"></div>
+        <h3>حقيبة لابتوب</h3>
+        <p>حقيبة عملية للحماية والتنقل اليومي.</p>
+        <button class="btn-primary">أضف إلى السلة</button>
+        <button class="btn-dark">اشتر الآن</button>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="section" id="checkout">
+    <h2>الدفع</h2>
+
+    <div class="checkout-box">
+      <input class="input" placeholder="الاسم الكامل" />
+      <input class="input" placeholder="رقم الجوال" />
+      <input class="input" placeholder="العنوان" />
+
+      <button class="btn-dark">إتمام الدفع</button>
+
+      <p class="confusing-text">
+        اضغط هنا لمعرفة تفاصيل الضمان
+      </p>
+
+      <p style="color:#64748b; line-height:1.8;">
+        هذا النص متعمد أن يبدو مهمًا لكنه ليس زرًا. إذا ضغط عليه المستخدم،
+        سيظهر في Basirah كـ Dead Click.
+      </p>
+    </div>
+  </section>
+
+  <section class="section" id="contact">
+    <h2>تواصل معنا</h2>
+
+    <div class="checkout-box">
+      <input class="input" placeholder="اسمك" />
+      <input class="input" placeholder="بريدك الإلكتروني" />
+      <input class="input" placeholder="رسالتك" />
+
+      <button class="btn-primary">إرسال الرسالة</button>
+    </div>
+  </section>
+
+  <div class="footer">
+    متجر Demo لاختبار Basirah AI — جميع البيانات لغرض العرض فقط
+  </div>
 
   <script src="/tracker.js" data-project-id="store_001"></script>
+
 </body>
 </html>
