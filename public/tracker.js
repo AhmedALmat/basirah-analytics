@@ -3,12 +3,13 @@
   const projectId =
     currentScript.getAttribute("data-project-id") || "demo_project";
 
+  const TRACK_ENDPOINT = "/track";
+
   const startTime = Date.now();
   let exitEventSent = false;
   let maxScroll = 0;
   let recentClicks = [];
 
-  // Funnel steps
   const funnelSteps = {
     page_view: "visit",
     add_to_cart: "add_to_cart",
@@ -22,7 +23,7 @@
   }
 
   function sendEvent(eventData) {
-    fetch("http://localhost:3000/track", {
+    fetch(TRACK_ENDPOINT, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -38,7 +39,7 @@
       type: "application/json"
     });
 
-    navigator.sendBeacon("http://localhost:3000/track", blob);
+    navigator.sendBeacon(TRACK_ENDPOINT, blob);
   }
 
   function baseEvent(eventType, extra = {}) {
@@ -50,17 +51,14 @@
       time_spent: extra.time_spent || null,
       user_agent: navigator.userAgent,
 
-      // Heatmap data
       screen_width: window.innerWidth,
       screen_height: window.innerHeight,
       click_x: extra.click_x || null,
       click_y: extra.click_y || null,
       scroll_depth: extra.scroll_depth || maxScroll,
 
-      // Funnel data
       funnel_step: extra.funnel_step || null,
 
-      // Alert / AI context
       alert_type: extra.alert_type || null,
       alert_message: extra.alert_message || null
     };
@@ -144,14 +142,12 @@
     );
   }
 
-  // 1. Page view
   sendEvent(
     baseEvent("page_view", {
       funnel_step: funnelSteps.page_view
     })
   );
 
-  // 2. Scroll depth tracking
   window.addEventListener("scroll", function () {
     const scrollTop = window.scrollY;
     const documentHeight =
@@ -163,7 +159,6 @@
     }
   });
 
-  // 3. Click + Heatmap + Funnel + Dead Click + Rage Click
   document.addEventListener("click", function (event) {
     const target = event.target;
 
@@ -180,7 +175,6 @@
 
     const funnelStep = detectFunnelStep(cleanText, window.location.href);
 
-    // Normal click
     sendEvent(
       baseEvent("click", {
         element_text: cleanText,
@@ -190,7 +184,6 @@
       })
     );
 
-    // Heatmap event
     sendEvent(
       baseEvent("heatmap_click", {
         element_text: cleanText,
@@ -199,7 +192,6 @@
       })
     );
 
-    // Funnel event
     if (funnelStep) {
       sendEvent(
         baseEvent("funnel_step", {
@@ -209,7 +201,6 @@
       );
     }
 
-    // Dead click
     if (!isClickableElement(target)) {
       sendEvent(
         baseEvent("dead_click", {
@@ -225,7 +216,6 @@
       );
     }
 
-    // Rage click
     if (detectRageClick(cleanText)) {
       sendEvent(
         baseEvent("rage_click", {
@@ -242,8 +232,6 @@
     }
   });
 
-  // 4. AI Summary raw signal
-  // هنا لا نولد AI فعلي، لكن نرسل بيانات تساعد السيرفر لاحقًا على بناء Summary.
   function sendAISummarySignal() {
     const timeSpent = getTimeSpent();
 
@@ -268,7 +256,6 @@
     );
   }
 
-  // 5. Page exit
   function sendExitEvent() {
     if (exitEventSent) return;
 
