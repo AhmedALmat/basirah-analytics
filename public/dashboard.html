@@ -2,7 +2,7 @@
 <html lang="ar">
 <head>
   <meta charset="UTF-8" />
-  <title>Basirah Analytics</title>
+  <title>Basirah AI | لوحة التحليلات</title>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -22,7 +22,7 @@
     .navbar {
       background: linear-gradient(135deg, #0f172a, #1e293b);
       color: white;
-      padding: 26px 42px;
+      padding: 24px 42px;
       box-shadow: 0 4px 14px rgba(0,0,0,0.14);
     }
 
@@ -31,15 +31,16 @@
       justify-content: space-between;
       align-items: center;
       width: 100%;
+      gap: 20px;
     }
 
     .arabic-logo {
-      font-size: 22px;
+      font-size: 26px;
       font-weight: 800;
     }
 
     .english-logo {
-      font-size: 28px;
+      font-size: 22px;
       font-weight: 700;
       direction: ltr;
     }
@@ -66,6 +67,7 @@
       margin: 0;
       color: #6b7280;
       font-size: 15px;
+      font-weight: 700;
     }
 
     .card p {
@@ -176,11 +178,11 @@
       }
 
       .arabic-logo {
-        font-size: 26px;
+        font-size: 24px;
       }
 
       .english-logo {
-        font-size: 22px;
+        font-size: 18px;
       }
 
       .container {
@@ -198,8 +200,8 @@
 
   <div class="navbar">
     <div class="navbar-content">
-      <div class="english-logo">بصيرة</div>
-      <div class="arabic-logo">Basirah Analytics</div>
+      <div class="english-logo">Basirah AI</div>
+      <div class="arabic-logo">بصيرة AI</div>
     </div>
   </div>
 
@@ -217,17 +219,17 @@
       </div>
 
       <div class="card">
-        <h3>Dead Clicks</h3>
-        <p id="النقرات الميتة">0</p>
+        <h3>النقرات الميتة</h3>
+        <p id="deadClicks">0</p>
       </div>
 
       <div class="card">
-        <h3>Smart Alerts</h3>
-        <p id="التنبيهات الذكية">0</p>
+        <h3>التنبيهات الذكية</h3>
+        <p id="smartAlerts">0</p>
       </div>
 
       <div class="card">
-        <h3>الصفحات الأكثر خروجًا</h3>
+        <h3>الصفحات الأعلى خروجًا</h3>
         <p id="exitPages">0</p>
       </div>
     </div>
@@ -239,7 +241,7 @@
 
     <div class="grid-2">
       <div class="section">
-        <h2>تحليل المغادرة</h2>
+        <h2>نقاط فقدان المستخدمين</h2>
         <canvas id="exitChart"></canvas>
       </div>
 
@@ -268,12 +270,12 @@
     </div>
 
     <div class="section">
-      <h2>Smart Alerts</h2>
+      <h2>التنبيهات الذكية</h2>
       <div id="alertsContainer"></div>
     </div>
 
     <div class="section">
-      <h2>توصيات UX ذكية</h2>
+      <h2>توصيات تحسين تجربة المستخدم</h2>
       <div id="recommendations"></div>
     </div>
 
@@ -286,13 +288,53 @@
       container.innerHTML = `<div class="empty">${message}</div>`;
     }
 
+    function simplifyPageName(url) {
+      if (!url) return "صفحة غير معروفة";
+
+      if (url.includes("test-site.html")) {
+        return "صفحة المتجر التجريبي";
+      }
+
+      if (url.includes("dashboard.html")) {
+        return "لوحة التحكم";
+      }
+
+      if (url.includes("index.html") || url.endsWith("/")) {
+        return "الصفحة الرئيسية";
+      }
+
+      return url;
+    }
+
+    function translateFunnelStep(step) {
+      const names = {
+        visit: "زيارة",
+        add_to_cart: "إضافة للسلة",
+        checkout: "الدفع",
+        purchase: "شراء",
+        contact: "تواصل"
+      };
+
+      return names[step] || step;
+    }
+
+    function translateAlertType(type) {
+      const names = {
+        dead_click: "نقرة ميتة",
+        rage_click: "نقرات إحباط",
+        quick_exit: "خروج سريع"
+      };
+
+      return names[type] || type;
+    }
+
     async function fetchJson(url) {
       const res = await fetch(url);
       return await res.json();
     }
 
     function renderExitChart(insights) {
-      const labels = insights.exit_pages.map(p => p.page_url);
+      const labels = insights.exit_pages.map(p => simplifyPageName(p.page_url));
       const data = insights.exit_pages.map(p => p.exits);
 
       new Chart(document.getElementById("exitChart"), {
@@ -300,7 +342,7 @@
         data: {
           labels,
           datasets: [{
-            label: "عدد المغادرات",
+            label: "عدد مرات الخروج",
             data
           }]
         },
@@ -311,7 +353,7 @@
     }
 
     function renderFunnelChart(funnelData) {
-      const labels = funnelData.funnel.map(item => item.step);
+      const labels = funnelData.funnel.map(item => translateFunnelStep(item.step));
       const data = funnelData.funnel.map(item => item.total);
 
       new Chart(document.getElementById("funnelChart"), {
@@ -319,7 +361,7 @@
         data: {
           labels,
           datasets: [{
-            label: "عدد الأحداث في كل خطوة",
+            label: "عدد الأحداث في كل مرحلة",
             data
           }]
         },
@@ -336,7 +378,7 @@
       const points = heatmapData.heatmap_points || [];
 
       if (points.length === 0) {
-        area.innerHTML = `<div class="empty">لا توجد بيانات Heatmap بعد.</div>`;
+        area.innerHTML = `<div class="empty">لا توجد بيانات خريطة نقرات بعد.</div>`;
         return;
       }
 
@@ -399,7 +441,7 @@
       const frustrationContainer = document.getElementById("frustrationContainer");
 
       if (!frustration.recommendations.length) {
-        showEmpty(frustrationContainer, "لا توجد Rage Clicks حتى الآن.");
+        showEmpty(frustrationContainer, "لا توجد نقرات إحباط حتى الآن.");
       } else {
         frustrationContainer.innerHTML = "";
         frustration.recommendations.forEach(item => {
@@ -419,7 +461,7 @@
       const deadClicksContainer = document.getElementById("deadClicksContainer");
 
       if (!deadClicks.recommendations.length) {
-        showEmpty(deadClicksContainer, "لا توجد Dead Clicks حتى الآن.");
+        showEmpty(deadClicksContainer, "لا توجد نقرات ميتة حتى الآن.");
       } else {
         deadClicksContainer.innerHTML = "";
         deadClicks.recommendations.forEach(item => {
@@ -444,9 +486,9 @@
           const div = document.createElement("div");
           div.className = "box alert-box";
           div.innerHTML = `
-            <strong>${alert.alert_type}</strong>
+            <strong>${translateAlertType(alert.alert_type)}</strong>
             <p>${alert.alert_message}</p>
-            <small>${alert.page_url}</small>
+            <small>${simplifyPageName(alert.page_url)}</small>
           `;
           alertsContainer.appendChild(div);
         });
@@ -455,14 +497,14 @@
       const recommendationsDiv = document.getElementById("recommendations");
 
       if (!insights.recommendations.length) {
-        showEmpty(recommendationsDiv, "لا توجد توصيات UX حتى الآن.");
+        showEmpty(recommendationsDiv, "لا توجد توصيات لتحسين تجربة المستخدم حتى الآن.");
       } else {
         recommendationsDiv.innerHTML = "";
         insights.recommendations.forEach(rec => {
           const div = document.createElement("div");
           div.className = "box recommendation";
           div.innerHTML = `
-            <strong>${rec.page_url}</strong>
+            <strong>${simplifyPageName(rec.page_url)}</strong>
             <p>${rec.reason}</p>
           `;
           recommendationsDiv.appendChild(div);
