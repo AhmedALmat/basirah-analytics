@@ -1,0 +1,311 @@
+(function () {
+  const currentScript = document.currentScript;
+  const projectId =
+    currentScript.getAttribute("data-project-id") || "demo_project";
+
+  const startTime = Date.now();
+  let exitEventSent = false;
+  let maxScroll = 0;
+  let recentClicks = [];
+
+  // Funnel steps
+  const funnelSteps = {
+    page_view: "visit",
+    add_to_cart: "add_to_cart",
+    checkout: "checkout",
+    purchase: "purchase",
+    contact: "contact"
+  };
+
+  function getTimeSpent() {
+    return Math.round((Date.now() - startTime) / 1000);
+  }
+
+  function sendEvent(eventData) {
+    fetch("http://localhost:3000/track", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(eventData)
+    }).catch((error) => {
+      console.log("Tracking error:", error);
+    });
+  }
+
+  function sendBeaconEvent(eventData) {
+    const blob = new Blob([JSON.stringify(eventData)], {
+      type: "application/json"
+    });
+
+    navigator.sendBeacon("http://localhost:3000/track", blob);
+  }
+
+  function baseEvent(eventType, extra = {}) {
+    return {
+      project_id: projectId,
+      event_type: eventType,
+      page_url: window.location.href,
+      element_text: extra.element_text || null,
+      time_spent: extra.time_spent || null,
+      user_agent: navigator.userAgent,
+
+      // Heatmap data
+      screen_width: window.innerWidth,
+      screen_height: window.innerHeight,
+      click_x: extra.click_x || null,
+      click_y: extra.click_y || null,
+      scroll_depth: extra.scroll_depth || maxScroll,
+
+      // Funnel data
+      funnel_step: extra.funnel_step || null,
+
+      // Alert / AI context
+      alert_type: extra.alert_type || null,
+      alert_message: extra.alert_message || null
+    };
+  }
+
+  function detectRageClick(clickText) {
+    const now = Date.now();
+
+    recentClicks.push({
+      text: clickText,
+      time: now
+    });
+
+    recentClicks = recentClicks.filter(click => now - click.time < 3000);
+
+    const sameClicks = recentClicks.filter(click => click.text === clickText);
+
+    return sameClicks.length >= 3;
+  }
+
+  function isClickableElement(target) {
+    return (
+      target.tagName === "BUTTON" ||
+      target.tagName === "A" ||
+      target.closest("button") ||
+      target.closest("a") ||
+      target.onclick
+    );
+  }
+
+  function detectFunnelStep(text, url) {
+    const lowerText = text.toLowerCase();
+    const lowerUrl = url.toLowerCase();
+
+    if (
+      lowerText.includes("أضف") ||
+      lowerText.includes("السلة") ||
+      lowerText.includes("add to cart") ||
+      lowerUrl.includes("cart")
+    ) {
+      return funnelSteps.add_to_cart;
+    }
+
+    if (
+      lowerText.includes("اشتر") ||
+      lowerText.includes("checkout") ||
+      lowerText.includes("دفع") ||
+      lowerUrl.includes("checkout")
+    ) {
+      return funnelSteps.checkout;
+    }
+
+    if (
+      lowerText.includes("تواصل") ||
+      lowerText.includes("contact") ||
+      lowerUrl.includes("contact")
+    ) {
+      return funnelSteps.contact;
+    }
+
+    if (
+      lowerText.includes("تم الشراء") ||
+      lowerText.includes("purchase") ||
+      lowerText.includes("success") ||
+      lowerUrl.includes("success") ||
+      lowerUrl.includes("thank")
+    ) {
+      return funnelSteps.purchase;
+    }
+
+    return null;
+  }
+
+  function sendSmartAlert(type, message) {
+    sendEvent(
+      baseEvent("smart_alert", {
+        alert_type: type,
+        alert_message: message,
+        element_text: message
+      })
+    );
+  }
+
+  // 1. Page view
+  sendEvent(
+    baseEvent("page_view", {
+      funnel_step: funnelSteps.page_view
+    })
+  );
+
+  // 2. Scroll depth tracking
+  window.addEventListener("scroll", function () {
+    const scrollTop = window.scrollY;
+    const documentHeight =
+      document.documentElement.scrollHeight - window.innerHeight;
+
+    if (documentHeight > 0) {
+      const scrollPercent = Math.round((scrollTop / documentHeight) * 100);
+      maxScroll = Math.max(maxScroll, scrollPercent);
+    }
+  });
+
+  // 3. Click + Heatmap + Funnel + Dead Click + Rage Click
+  document.addEventListener("click", function (event) {
+    const target = event.target;
+
+    const text =
+      target.innerText ||
+      target.value ||
+      target.getAttribute("aria-label") ||
+      target.tagName;
+
+    const cleanText = text.substring(0, 100);
+
+    const clickX = event.clientX;
+    const clickY = event.clientY;
+
+    const funnelStep = detectFunnelStep(cleanText, window.location.href);
+
+    // Normal click
+    sendEvent(
+      baseEvent("click", {
+        element_text: cleanText,
+        click_x: clickX,
+        click_y: clickY,
+        funnel_step: funnelStep
+      })
+    );
+
+    // Heatmap event
+    sendEvent(
+      baseEvent("heatmap_click", {
+        element_text: cleanText,
+        click_x: clickX,
+        click_y: clickY
+      })
+    );
+
+    // Funnel event
+    if (funnelStep) {
+      sendEvent(
+        baseEvent("funnel_step", {
+          element_text: cleanText,
+          funnel_step: funnelStep
+        })
+      );
+    }
+
+    // Dead click
+    if (!isClickableElement(target)) {
+      sendEvent(
+        baseEvent("dead_click", {
+          element_text: cleanText,
+          click_x: clickX,
+          click_y: clickY
+        })
+      );
+
+      sendSmartAlert(
+        "dead_click",
+        `المستخدم ضغط على عنصر غير تفاعلي: ${cleanText}`
+      );
+    }
+
+    // Rage click
+    if (detectRageClick(cleanText)) {
+      sendEvent(
+        baseEvent("rage_click", {
+          element_text: cleanText,
+          click_x: clickX,
+          click_y: clickY
+        })
+      );
+
+      sendSmartAlert(
+        "rage_click",
+        `نقرات متكررة بسرعة على العنصر: ${cleanText}`
+      );
+    }
+  });
+
+  // 4. AI Summary raw signal
+  // هنا لا نولد AI فعلي، لكن نرسل بيانات تساعد السيرفر لاحقًا على بناء Summary.
+  function sendAISummarySignal() {
+    const timeSpent = getTimeSpent();
+
+    let summarySignal = "";
+
+    if (timeSpent < 10) {
+      summarySignal = "المستخدم غادر بسرعة. قد تكون الصفحة غير واضحة أو غير جذابة.";
+    } else if (timeSpent > 60 && maxScroll < 30) {
+      summarySignal = "المستخدم بقي طويلًا لكنه لم يتفاعل كثيرًا. قد تكون الصفحة مربكة.";
+    } else if (maxScroll > 80) {
+      summarySignal = "المستخدم قرأ معظم الصفحة. يوجد اهتمام بالمحتوى.";
+    } else {
+      summarySignal = "سلوك المستخدم متوسط ويحتاج تحليل إضافي.";
+    }
+
+    sendBeaconEvent(
+      baseEvent("ai_summary_signal", {
+        time_spent: timeSpent,
+        scroll_depth: maxScroll,
+        element_text: summarySignal
+      })
+    );
+  }
+
+  // 5. Page exit
+  function sendExitEvent() {
+    if (exitEventSent) return;
+
+    exitEventSent = true;
+
+    sendAISummarySignal();
+
+    sendBeaconEvent(
+      baseEvent("page_exit", {
+        time_spent: getTimeSpent(),
+        scroll_depth: maxScroll,
+        element_text: `Max scroll: ${maxScroll}%`
+      })
+    );
+
+    if (getTimeSpent() < 5) {
+      sendBeaconEvent(
+        baseEvent("smart_alert", {
+          alert_type: "quick_exit",
+          alert_message: "المستخدم غادر الصفحة خلال وقت قصير جدًا.",
+          element_text: "Quick exit detected"
+        })
+      );
+    }
+  }
+
+  document.addEventListener("visibilitychange", function () {
+    if (document.visibilityState === "hidden") {
+      sendExitEvent();
+    }
+  });
+
+  window.addEventListener("pagehide", function () {
+    sendExitEvent();
+  });
+
+  window.addEventListener("beforeunload", function () {
+    sendExitEvent();
+  });
+})();

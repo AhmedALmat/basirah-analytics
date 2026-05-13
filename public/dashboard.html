@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8" />
+  <title>Basirah Analytics</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      direction: rtl;
+      background: #f4f7fb;
+      color: #111827;
+    }
+
+    .navbar {
+      background: linear-gradient(135deg, #0f172a, #1e293b);
+      color: white;
+      padding: 26px 42px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.14);
+    }
+
+    .navbar-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
+
+    .arabic-logo {
+      font-size: 22px;
+      font-weight: 800;
+    }
+
+    .english-logo {
+      font-size: 28px;
+      font-weight: 700;
+      direction: ltr;
+    }
+
+    .container {
+      padding: 30px;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+    }
+
+    .card h3 {
+      margin: 0;
+      color: #6b7280;
+      font-size: 15px;
+    }
+
+    .card p {
+      font-size: 34px;
+      margin: 14px 0 0;
+      font-weight: bold;
+      color: #111827;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+      gap: 24px;
+    }
+
+    .section {
+      background: white;
+      padding: 24px;
+      border-radius: 16px;
+      margin-bottom: 24px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+    }
+
+    .section h2 {
+      margin-top: 0;
+      margin-bottom: 18px;
+      font-size: 20px;
+    }
+
+    .box {
+      padding: 15px;
+      border-radius: 12px;
+      margin-bottom: 14px;
+      line-height: 1.7;
+    }
+
+    .recommendation {
+      background: #fff7ed;
+      border-right: 5px solid #f59e0b;
+    }
+
+    .rage-box {
+      background: #fef2f2;
+      border-right: 5px solid #dc2626;
+    }
+
+    .dead-box {
+      background: #eff6ff;
+      border-right: 5px solid #2563eb;
+    }
+
+    .alert-box {
+      background: #f5f3ff;
+      border-right: 5px solid #7c3aed;
+    }
+
+    .ai-box {
+      background: #ecfdf5;
+      border-right: 5px solid #059669;
+      font-size: 17px;
+    }
+
+    canvas {
+      max-height: 340px;
+    }
+
+    .heatmap-area {
+      position: relative;
+      height: 360px;
+      background:
+        linear-gradient(90deg, rgba(17,24,39,0.05) 1px, transparent 1px),
+        linear-gradient(rgba(17,24,39,0.05) 1px, transparent 1px);
+      background-size: 40px 40px;
+      border: 1px solid #e5e7eb;
+      border-radius: 14px;
+      overflow: hidden;
+    }
+
+    .heat-dot {
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      background: rgba(220, 38, 38, 0.65);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 18px rgba(220, 38, 38, 0.65);
+    }
+
+    .small {
+      color: #6b7280;
+      font-size: 13px;
+    }
+
+    .empty {
+      color: #6b7280;
+      background: #f9fafb;
+      padding: 14px;
+      border-radius: 10px;
+    }
+
+    @media (max-width: 700px) {
+      .navbar {
+        padding: 22px;
+      }
+
+      .navbar-content {
+        gap: 12px;
+      }
+
+      .arabic-logo {
+        font-size: 26px;
+      }
+
+      .english-logo {
+        font-size: 22px;
+      }
+
+      .container {
+        padding: 18px;
+      }
+
+      .grid-2 {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="navbar">
+    <div class="navbar-content">
+      <div class="english-logo">بصيرة</div>
+      <div class="arabic-logo">Basirah Analytics</div>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <div class="cards">
+      <div class="card">
+        <h3>إجمالي الأحداث</h3>
+        <p id="totalEvents">0</p>
+      </div>
+
+      <div class="card">
+        <h3>Rage Clicks</h3>
+        <p id="rageClicks">0</p>
+      </div>
+
+      <div class="card">
+        <h3>Dead Clicks</h3>
+        <p id="deadClicks">0</p>
+      </div>
+
+      <div class="card">
+        <h3>Smart Alerts</h3>
+        <p id="smartAlerts">0</p>
+      </div>
+
+      <div class="card">
+        <h3>الصفحات الأكثر خروجًا</h3>
+        <p id="exitPages">0</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>AI Summary</h2>
+      <div id="aiSummary" class="box ai-box">جاري تحميل الملخص...</div>
+    </div>
+
+    <div class="grid-2">
+      <div class="section">
+        <h2>تحليل المغادرة</h2>
+        <canvas id="exitChart"></canvas>
+      </div>
+
+      <div class="section">
+        <h2>Funnel Analysis</h2>
+        <canvas id="funnelChart"></canvas>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Heatmap Clicks</h2>
+      <p class="small">النقاط الحمراء تمثل أماكن ضغط المستخدمين داخل الصفحة.</p>
+      <div id="heatmapArea" class="heatmap-area"></div>
+    </div>
+
+    <div class="grid-2">
+      <div class="section">
+        <h2>مؤشرات إحباط المستخدمين</h2>
+        <div id="frustrationContainer"></div>
+      </div>
+
+      <div class="section">
+        <h2>العناصر التي تربك المستخدم</h2>
+        <div id="deadClicksContainer"></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Smart Alerts</h2>
+      <div id="alertsContainer"></div>
+    </div>
+
+    <div class="section">
+      <h2>توصيات UX ذكية</h2>
+      <div id="recommendations"></div>
+    </div>
+
+  </div>
+
+  <script>
+    const PROJECT_ID = "store_001";
+
+    function showEmpty(container, message) {
+      container.innerHTML = `<div class="empty">${message}</div>`;
+    }
+
+    async function fetchJson(url) {
+      const res = await fetch(url);
+      return await res.json();
+    }
+
+    function renderExitChart(insights) {
+      const labels = insights.exit_pages.map(p => p.page_url);
+      const data = insights.exit_pages.map(p => p.exits);
+
+      new Chart(document.getElementById("exitChart"), {
+        type: "bar",
+        data: {
+          labels,
+          datasets: [{
+            label: "عدد المغادرات",
+            data
+          }]
+        },
+        options: {
+          responsive: true
+        }
+      });
+    }
+
+    function renderFunnelChart(funnelData) {
+      const labels = funnelData.funnel.map(item => item.step);
+      const data = funnelData.funnel.map(item => item.total);
+
+      new Chart(document.getElementById("funnelChart"), {
+        type: "bar",
+        data: {
+          labels,
+          datasets: [{
+            label: "عدد الأحداث في كل خطوة",
+            data
+          }]
+        },
+        options: {
+          responsive: true
+        }
+      });
+    }
+
+    function renderHeatmap(heatmapData) {
+      const area = document.getElementById("heatmapArea");
+      area.innerHTML = "";
+
+      const points = heatmapData.heatmap_points || [];
+
+      if (points.length === 0) {
+        area.innerHTML = `<div class="empty">لا توجد بيانات Heatmap بعد.</div>`;
+        return;
+      }
+
+      points.forEach(point => {
+        const dot = document.createElement("div");
+        dot.className = "heat-dot";
+
+        const xPercent = point.screen_width
+          ? (point.click_x / point.screen_width) * 100
+          : 50;
+
+        const yPercent = point.screen_height
+          ? (point.click_y / point.screen_height) * 100
+          : 50;
+
+        dot.style.left = `${Math.min(Math.max(xPercent, 0), 100)}%`;
+        dot.style.top = `${Math.min(Math.max(yPercent, 0), 100)}%`;
+
+        const size = Math.min(18 + point.clicks * 3, 45);
+        dot.style.width = `${size}px`;
+        dot.style.height = `${size}px`;
+
+        area.appendChild(dot);
+      });
+    }
+
+    async function loadDashboard() {
+      const [
+        events,
+        insights,
+        frustration,
+        deadClicks,
+        funnel,
+        heatmap,
+        alerts,
+        aiSummary
+      ] = await Promise.all([
+        fetchJson("/api/events"),
+        fetchJson(`/api/insights?project_id=${PROJECT_ID}`),
+        fetchJson(`/api/frustration?project_id=${PROJECT_ID}`),
+        fetchJson(`/api/dead-clicks?project_id=${PROJECT_ID}`),
+        fetchJson(`/api/funnel?project_id=${PROJECT_ID}`),
+        fetchJson(`/api/heatmap?project_id=${PROJECT_ID}`),
+        fetchJson(`/api/alerts?project_id=${PROJECT_ID}`),
+        fetchJson(`/api/ai-summary?project_id=${PROJECT_ID}`)
+      ]);
+
+      document.getElementById("totalEvents").innerText = events.length;
+      document.getElementById("exitPages").innerText = insights.exit_pages.length;
+      document.getElementById("rageClicks").innerText = frustration.summary.total_rage_clicks || 0;
+      document.getElementById("deadClicks").innerText = deadClicks.summary.total_dead_clicks || 0;
+      document.getElementById("smartAlerts").innerText = alerts.alerts.length || 0;
+
+      document.getElementById("aiSummary").innerText = aiSummary.summary;
+
+      renderExitChart(insights);
+      renderFunnelChart(funnel);
+      renderHeatmap(heatmap);
+
+      const frustrationContainer = document.getElementById("frustrationContainer");
+
+      if (!frustration.recommendations.length) {
+        showEmpty(frustrationContainer, "لا توجد Rage Clicks حتى الآن.");
+      } else {
+        frustrationContainer.innerHTML = "";
+        frustration.recommendations.forEach(item => {
+          const div = document.createElement("div");
+          div.className = "box rage-box";
+          div.innerHTML = `
+            <strong>${item.element_text}</strong>
+            <p>${item.issue}</p>
+            <small>مستوى الخطورة: ${item.severity}</small>
+            <br>
+            <small>${item.recommendation}</small>
+          `;
+          frustrationContainer.appendChild(div);
+        });
+      }
+
+      const deadClicksContainer = document.getElementById("deadClicksContainer");
+
+      if (!deadClicks.recommendations.length) {
+        showEmpty(deadClicksContainer, "لا توجد Dead Clicks حتى الآن.");
+      } else {
+        deadClicksContainer.innerHTML = "";
+        deadClicks.recommendations.forEach(item => {
+          const div = document.createElement("div");
+          div.className = "box dead-box";
+          div.innerHTML = `
+            <strong>${item.element_text}</strong>
+            <p>${item.issue}</p>
+            <small>${item.recommendation}</small>
+          `;
+          deadClicksContainer.appendChild(div);
+        });
+      }
+
+      const alertsContainer = document.getElementById("alertsContainer");
+
+      if (!alerts.alerts.length) {
+        showEmpty(alertsContainer, "لا توجد تنبيهات ذكية حتى الآن.");
+      } else {
+        alertsContainer.innerHTML = "";
+        alerts.alerts.forEach(alert => {
+          const div = document.createElement("div");
+          div.className = "box alert-box";
+          div.innerHTML = `
+            <strong>${alert.alert_type}</strong>
+            <p>${alert.alert_message}</p>
+            <small>${alert.page_url}</small>
+          `;
+          alertsContainer.appendChild(div);
+        });
+      }
+
+      const recommendationsDiv = document.getElementById("recommendations");
+
+      if (!insights.recommendations.length) {
+        showEmpty(recommendationsDiv, "لا توجد توصيات UX حتى الآن.");
+      } else {
+        recommendationsDiv.innerHTML = "";
+        insights.recommendations.forEach(rec => {
+          const div = document.createElement("div");
+          div.className = "box recommendation";
+          div.innerHTML = `
+            <strong>${rec.page_url}</strong>
+            <p>${rec.reason}</p>
+          `;
+          recommendationsDiv.appendChild(div);
+        });
+      }
+    }
+
+    loadDashboard();
+  </script>
+
+</body>
+</html>
