@@ -6,6 +6,7 @@
   <title>متجر Demo | Basirah AI</title>
 
   <style>
+
     body {
       margin: 0;
       font-family: Arial, sans-serif;
@@ -87,6 +88,11 @@
       font-weight: bold;
       font-size: 16px;
       margin: 6px;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
     }
 
     .btn-primary {
@@ -128,6 +134,11 @@
       padding: 24px;
       box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
       border: 1px solid #e5e7eb;
+      transition: 0.3s;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
     }
 
     .fake-img {
@@ -162,6 +173,7 @@
       border-radius: 10px;
       margin-bottom: 14px;
       font-size: 15px;
+      box-sizing: border-box;
     }
 
     .confusing-text {
@@ -179,7 +191,62 @@
       margin-top: 40px;
     }
 
+    /* DASHBOARD BUTTON */
+
+    .dashboard-btn {
+      position: fixed;
+      left: 25px;
+      bottom: 25px;
+      z-index: 9999;
+
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      background: rgba(15, 23, 42, 0.92);
+      color: white;
+
+      padding: 16px 24px;
+
+      border-radius: 18px;
+
+      text-decoration: none;
+
+      font-size: 15px;
+      font-weight: bold;
+
+      backdrop-filter: blur(10px);
+
+      box-shadow:
+        0 10px 35px rgba(15,23,42,0.35),
+        0 0 20px rgba(34,197,94,0.25);
+
+      border: 1px solid rgba(255,255,255,0.08);
+
+      transition: 0.35s ease;
+    }
+
+    .dashboard-btn:hover {
+      transform: translateY(-4px) scale(1.03);
+
+      background: #111827;
+
+      box-shadow:
+        0 16px 40px rgba(15,23,42,0.45),
+        0 0 28px rgba(34,197,94,0.45);
+    }
+
+    .dashboard-icon {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #22c55e;
+
+      box-shadow: 0 0 12px #22c55e;
+    }
+
     @media (max-width: 800px) {
+
       .hero {
         grid-template-columns: 1fr;
         padding: 50px 24px;
@@ -196,23 +263,20 @@
       .navbar {
         padding: 18px 24px;
       }
-      
-      .dashboard-btn {
-        position: fixed;
-        left: 20px;
-        bottom: 20px;
-        background: #22c55e;
-        color: white;
-        padding: 14px 20px;
-        border-radius: 12px;
-        text-decoration: none;
-        font-weight: bold;
-        box-shadow: 0 6px 20px rgba(0,0,0,0.2);
-      }
+
       .nav-links {
         display: none;
       }
+
+      .dashboard-btn {
+        left: 15px;
+        bottom: 15px;
+        padding: 14px 18px;
+        font-size: 14px;
+      }
+
     }
+
   </style>
 </head>
 
@@ -231,9 +295,12 @@
   <section class="hero">
     <div>
       <h1>منتجات تقنية ذكية لحياتك اليومية</h1>
+
       <p>
-        متجر تجريبي مصمم لاختبار Basirah AI. جرّب الضغط على الأزرار،
-        الانتقال بين الأقسام، أو الضغط على نصوص غير قابلة للنقر حتى ترى كيف تسجل المنصة السلوك.
+        متجر تجريبي مصمم لاختبار Basirah AI.
+        جرّب الضغط على الأزرار،
+        والتنقل بين الأقسام،
+        ومشاهدة كيف تحلل المنصة سلوك المستخدمين.
       </p>
 
       <button class="btn-primary">أضف إلى السلة</button>
@@ -243,52 +310,79 @@
 
     <div class="hero-card">
       <div class="product-img"></div>
+
       <h2>ساعة ذكية Pro</h2>
-      <p>تتبع النشاط، النوم، والتنبيهات اليومية بتصميم أنيق.</p>
+
+      <p>
+        تتبع النشاط، النوم، والتنبيهات اليومية بتصميم أنيق.
+      </p>
+
       <div class="price">299 ريال</div>
+
       <button class="btn-primary">أضف إلى السلة</button>
       <button class="btn-dark">اشتر الآن</button>
     </div>
   </section>
 
   <section class="section" id="products">
+
     <h2>منتجات مميزة</h2>
 
     <div class="products">
 
       <div class="card">
         <div class="fake-img"></div>
+
         <h3>سماعة لاسلكية</h3>
-        <p>صوت نقي وبطارية تدوم طويلًا للاستخدام اليومي.</p>
+
+        <p>
+          صوت نقي وبطارية تدوم طويلًا للاستخدام اليومي.
+        </p>
+
         <button class="btn-primary">أضف إلى السلة</button>
         <button class="btn-dark">اشتر الآن</button>
       </div>
 
       <div class="card">
         <div class="fake-img"></div>
+
         <h3>شاحن سريع</h3>
-        <p>شاحن USB-C سريع مناسب للجوالات والأجهزة اللوحية.</p>
+
+        <p>
+          شاحن USB-C سريع مناسب للجوالات والأجهزة اللوحية.
+        </p>
+
         <button class="btn-primary">أضف إلى السلة</button>
         <button class="btn-dark">اشتر الآن</button>
       </div>
 
       <div class="card">
         <div class="fake-img"></div>
+
         <h3>حقيبة لابتوب</h3>
-        <p>حقيبة عملية للحماية والتنقل اليومي.</p>
+
+        <p>
+          حقيبة عملية للحماية والتنقل اليومي.
+        </p>
+
         <button class="btn-primary">أضف إلى السلة</button>
         <button class="btn-dark">اشتر الآن</button>
       </div>
 
     </div>
+
   </section>
 
   <section class="section" id="checkout">
+
     <h2>الدفع</h2>
 
     <div class="checkout-box">
+
       <input class="input" placeholder="الاسم الكامل" />
+
       <input class="input" placeholder="رقم الجوال" />
+
       <input class="input" placeholder="العنوان" />
 
       <button class="btn-dark">إتمام الدفع</button>
@@ -298,22 +392,31 @@
       </p>
 
       <p style="color:#64748b; line-height:1.8;">
-        هذا النص متعمد أن يبدو مهمًا لكنه ليس زرًا. إذا ضغط عليه المستخدم،
+        هذا النص متعمد أن يبدو مهمًا لكنه ليس زرًا.
+        إذا ضغط عليه المستخدم،
         سيظهر في Basirah كـ Dead Click.
       </p>
+
     </div>
+
   </section>
 
   <section class="section" id="contact">
+
     <h2>تواصل معنا</h2>
 
     <div class="checkout-box">
+
       <input class="input" placeholder="اسمك" />
+
       <input class="input" placeholder="بريدك الإلكتروني" />
+
       <input class="input" placeholder="رسالتك" />
 
       <button class="btn-primary">إرسال الرسالة</button>
+
     </div>
+
   </section>
 
   <div class="footer">
@@ -321,6 +424,7 @@
   </div>
 
   <a href="/dashboard.html" class="dashboard-btn">
+    <span class="dashboard-icon"></span>
     فتح لوحة التحكم
   </a>
 
