@@ -15,19 +15,18 @@
     body {
       margin: 0;
       font-family: "Tahoma", "Arial", sans-serif;
-      direction: rtl;
       background:
-        radial-gradient(circle at top right, rgba(56, 189, 248, 0.16), transparent 30%),
-        radial-gradient(circle at bottom left, rgba(99, 102, 241, 0.14), transparent 35%),
+        radial-gradient(circle at top right, rgba(56, 189, 248, 0.13), transparent 28%),
+        radial-gradient(circle at bottom left, rgba(99, 102, 241, 0.12), transparent 35%),
         #030712;
       color: #f8fafc;
       min-height: 100vh;
     }
 
     .navbar {
-      background: rgba(3, 7, 18, 0.88);
+      background: rgba(3, 7, 18, 0.9);
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-      padding: 22px 42px;
+      padding: 18px 42px;
       position: sticky;
       top: 0;
       z-index: 1000;
@@ -42,194 +41,189 @@
     }
 
     .english-logo {
-      font-size: 26px;
+      font-size: 24px;
       font-weight: 800;
       color: #38bdf8;
       direction: ltr;
     }
 
     .arabic-logo {
-      font-size: 17px;
-      font-weight: 700;
+      font-size: 15px;
+      font-weight: 600;
       color: #cbd5e1;
     }
 
     .container {
-      padding: 34px;
-      max-width: 1600px;
+      padding: 26px 34px;
+      max-width: 1500px;
       margin: auto;
     }
 
     .hero-ai {
       background:
-        linear-gradient(135deg, rgba(56, 189, 248, 0.14), rgba(79, 70, 229, 0.12)),
-        rgba(255, 255, 255, 0.045);
+        linear-gradient(135deg, rgba(56, 189, 248, 0.12), rgba(79, 70, 229, 0.10)),
+        rgba(255, 255, 255, 0.04);
       border: 1px solid rgba(255, 255, 255, 0.09);
-      border-radius: 28px;
-      padding: 34px;
-      margin-bottom: 26px;
-      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.28);
+      border-radius: 24px;
+      padding: 28px;
+      margin-bottom: 22px;
+      box-shadow: 0 18px 55px rgba(0, 0, 0, 0.22);
     }
 
     .hero-ai span {
       display: inline-block;
       color: #38bdf8;
-      font-weight: 800;
-      margin-bottom: 12px;
-      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      font-size: 12px;
+      letter-spacing: 0.4px;
     }
 
     .hero-ai h1 {
-      margin: 0 0 14px;
-      font-size: 34px;
-      line-height: 1.5;
+      margin: 0 0 10px;
+      font-size: 24px;
+      line-height: 1.7;
+      font-weight: 700;
     }
 
     .hero-ai p {
       color: #cbd5e1;
       line-height: 2;
       margin: 0;
-      font-size: 16px;
-      max-width: 1050px;
+      font-size: 14px;
+      max-width: 900px;
     }
 
     .cards {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-      gap: 18px;
-      margin-bottom: 26px;
+      grid-template-columns: repeat(auto-fit, minmax(205px, 1fr));
+      gap: 16px;
+      margin-bottom: 22px;
     }
 
     .card,
     .section {
       background: rgba(255, 255, 255, 0.045);
       border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 24px;
-      box-shadow: 0 20px 55px rgba(0, 0, 0, 0.22);
+      border-radius: 22px;
+      box-shadow: 0 16px 42px rgba(0, 0, 0, 0.18);
       backdrop-filter: blur(12px);
     }
 
     .card {
-      padding: 22px;
+      padding: 18px;
       position: relative;
       overflow: hidden;
+      min-height: 145px;
     }
 
     .card::before {
       content: "";
       position: absolute;
-      top: 0;
+      top: 18px;
       right: 0;
       width: 4px;
-      height: 100%;
+      height: 60%;
+      border-radius: 10px 0 0 10px;
       background: #38bdf8;
     }
 
-    .card.warning::before {
-      background: #ef4444;
-    }
-
-    .card.orange::before {
-      background: #f59e0b;
-    }
-
-    .card.green::before {
-      background: #22c55e;
-    }
-
-    .card.purple::before {
-      background: #8b5cf6;
-    }
+    .card.warning::before { background: #ef4444; }
+    .card.orange::before { background: #f59e0b; }
+    .card.green::before { background: #22c55e; }
+    .card.purple::before { background: #8b5cf6; }
 
     .card h3 {
       margin: 0;
       color: #94a3b8;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 700;
     }
 
     .card p {
-      font-size: 36px;
-      margin: 12px 0 0;
-      font-weight: 900;
+      font-size: 27px;
+      margin: 10px 0 0;
+      font-weight: 800;
       color: #ffffff;
+      line-height: 1.2;
     }
 
     .card small {
       display: block;
       margin-top: 8px;
       color: #94a3b8;
-      font-size: 12px;
-      line-height: 1.7;
+      font-size: 11.5px;
+      line-height: 1.8;
     }
 
     .section {
-      padding: 26px;
-      margin-bottom: 24px;
+      padding: 22px;
+      margin-bottom: 22px;
     }
 
     .section h2 {
-      margin: 0 0 16px;
-      font-size: 22px;
+      margin: 0 0 14px;
+      font-size: 18px;
+      font-weight: 700;
       color: #ffffff;
     }
 
     .section-subtitle {
       color: #94a3b8;
-      font-size: 13px;
+      font-size: 12.5px;
       line-height: 1.8;
-      margin: -4px 0 18px;
+      margin: -4px 0 16px;
     }
 
     .ai-summary-box {
-      background: linear-gradient(135deg, rgba(34, 197, 94, 0.11), rgba(56, 189, 248, 0.08));
+      background: linear-gradient(135deg, rgba(34, 197, 94, 0.10), rgba(56, 189, 248, 0.07));
       border: 1px solid rgba(34, 197, 94, 0.22);
-      border-right: 5px solid #22c55e;
+      border-right: 4px solid #22c55e;
       color: #dcfce7;
-      padding: 22px;
-      border-radius: 18px;
+      padding: 18px;
+      border-radius: 16px;
       line-height: 2;
-      font-size: 17px;
+      font-size: 14px;
     }
 
     .grid-2 {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(430px, 1fr));
-      gap: 24px;
+      gap: 22px;
     }
 
     canvas {
-      max-height: 330px;
+      max-height: 300px;
     }
 
     .heatmap-area {
       position: relative;
-      height: 390px;
+      height: 340px;
       background:
-        linear-gradient(90deg, rgba(148, 163, 184, 0.07) 1px, transparent 1px),
-        linear-gradient(rgba(148, 163, 184, 0.07) 1px, transparent 1px),
-        radial-gradient(circle at 35% 35%, rgba(56, 189, 248, 0.08), transparent 35%),
-        rgba(2, 6, 23, 0.72);
+        linear-gradient(90deg, rgba(148, 163, 184, 0.06) 1px, transparent 1px),
+        linear-gradient(rgba(148, 163, 184, 0.06) 1px, transparent 1px),
+        radial-gradient(circle at 35% 35%, rgba(56, 189, 248, 0.07), transparent 35%),
+        rgba(2, 6, 23, 0.7);
       background-size: 42px 42px, 42px 42px, auto, auto;
       border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 22px;
+      border-radius: 20px;
       overflow: hidden;
     }
 
     .heat-dot {
       position: absolute;
-      width: 18px;
-      height: 18px;
+      width: 16px;
+      height: 16px;
       background: rgba(239, 68, 68, 0.78);
       border-radius: 50%;
       transform: translate(-50%, -50%);
-      box-shadow: 0 0 26px rgba(239, 68, 68, 0.9);
+      box-shadow: 0 0 24px rgba(239, 68, 68, 0.9);
     }
 
     .box {
-      padding: 18px;
-      border-radius: 16px;
-      margin-bottom: 14px;
+      padding: 16px;
+      border-radius: 15px;
+      margin-bottom: 12px;
       line-height: 1.9;
       color: #e5e7eb;
       border: 1px solid rgba(255, 255, 255, 0.08);
@@ -237,56 +231,61 @@
 
     .box strong {
       color: #ffffff;
-      font-size: 16px;
+      font-size: 14px;
+      font-weight: 700;
     }
 
     .box p {
-      margin: 10px 0;
+      margin: 8px 0;
       color: #cbd5e1;
+      font-size: 13px;
+      line-height: 1.9;
     }
 
     .box small {
       color: #94a3b8;
+      font-size: 12px;
     }
 
     .recommendation {
-      background: rgba(245, 158, 11, 0.09);
-      border-right: 5px solid #f59e0b;
+      background: rgba(245, 158, 11, 0.08);
+      border-right: 4px solid #f59e0b;
     }
 
     .rage-box {
-      background: rgba(239, 68, 68, 0.09);
-      border-right: 5px solid #ef4444;
+      background: rgba(239, 68, 68, 0.08);
+      border-right: 4px solid #ef4444;
     }
 
     .dead-box {
-      background: rgba(56, 189, 248, 0.09);
-      border-right: 5px solid #38bdf8;
+      background: rgba(56, 189, 248, 0.08);
+      border-right: 4px solid #38bdf8;
     }
 
     .alert-box {
-      background: rgba(139, 92, 246, 0.10);
-      border-right: 5px solid #8b5cf6;
+      background: rgba(139, 92, 246, 0.09);
+      border-right: 4px solid #8b5cf6;
     }
 
     .empty {
       color: #94a3b8;
-      background: rgba(255, 255, 255, 0.04);
-      padding: 16px;
-      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.035);
+      padding: 14px;
+      border-radius: 13px;
       border: 1px dashed rgba(255, 255, 255, 0.12);
+      font-size: 13px;
     }
 
     .footer-note {
       text-align: center;
       color: #64748b;
-      padding: 18px 0 40px;
-      font-size: 13px;
+      padding: 14px 0 34px;
+      font-size: 12px;
     }
 
     @media (max-width: 700px) {
       .navbar {
-        padding: 20px;
+        padding: 18px;
       }
 
       .navbar-content {
@@ -299,7 +298,11 @@
       }
 
       .hero-ai h1 {
-        font-size: 25px;
+        font-size: 21px;
+      }
+
+      .hero-ai p {
+        font-size: 13px;
       }
 
       .grid-2 {
@@ -307,7 +310,7 @@
       }
 
       .card p {
-        font-size: 30px;
+        font-size: 25px;
       }
     }
   </style>
@@ -485,10 +488,10 @@
           datasets: [{
             label: "عدد مرات الخروج",
             data,
-            backgroundColor: "rgba(56, 189, 248, 0.65)",
+            backgroundColor: "rgba(56, 189, 248, 0.55)",
             borderColor: "rgba(56, 189, 248, 1)",
             borderWidth: 1,
-            borderRadius: 12
+            borderRadius: 10
           }]
         },
         options: {
@@ -508,7 +511,7 @@
             x: {
               beginAtZero: true,
               ticks: { precision: 0 },
-              grid: { color: "rgba(148, 163, 184, 0.14)" }
+              grid: { color: "rgba(148, 163, 184, 0.12)" }
             },
             y: {
               grid: { display: false }
@@ -529,10 +532,10 @@
           datasets: [{
             label: "عدد المستخدمين في كل مرحلة",
             data,
-            backgroundColor: "rgba(34, 197, 94, 0.62)",
+            backgroundColor: "rgba(34, 197, 94, 0.52)",
             borderColor: "rgba(34, 197, 94, 1)",
             borderWidth: 1,
-            borderRadius: 12
+            borderRadius: 10
           }]
         },
         options: {
@@ -551,7 +554,7 @@
             y: {
               beginAtZero: true,
               ticks: { precision: 0 },
-              grid: { color: "rgba(148, 163, 184, 0.14)" }
+              grid: { color: "rgba(148, 163, 184, 0.12)" }
             },
             x: {
               grid: { display: false }
@@ -587,7 +590,7 @@
         dot.style.left = `${Math.min(Math.max(xPercent, 0), 100)}%`;
         dot.style.top = `${Math.min(Math.max(yPercent, 0), 100)}%`;
 
-        const size = Math.min(18 + point.clicks * 3, 48);
+        const size = Math.min(16 + point.clicks * 3, 44);
         dot.style.width = `${size}px`;
         dot.style.height = `${size}px`;
 
