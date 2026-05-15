@@ -181,14 +181,32 @@ app.delete("/api/events", (req, res) => {
 });
 
 app.get("/api/events", (req, res) => {
+
+  const projectId =
+    req.query.project_id || "store_001";
+
   db.all(
-    "SELECT * FROM events ORDER BY created_at DESC LIMIT 100",
-    [],
+    `
+    SELECT *
+    FROM events
+    WHERE project_id = ?
+    ORDER BY created_at DESC
+    LIMIT 100
+    `,
+    [projectId],
     (err, rows) => {
-      if (err) return res.status(500).json({ error: "Database error" });
+
+      if (err) {
+        return res.status(500).json({
+          error: "Database error"
+        });
+      }
+
       res.json(rows);
+
     }
   );
+
 });
 
 app.get("/api/summary", (req, res) => {

@@ -621,7 +621,7 @@
   </div>
 
   <script>
-    const params = new URLSearchParams(window.location.search);
+    const params = new window.URLSearchParams(window.location.search);
 
     const PROJECT_ID = params.get("project") || "store_001";
 
@@ -898,7 +898,7 @@
         aiSummary,
         timeline
       ] = await Promise.all([
-        fetchJson("/api/events"),
+        fetchJson(`/api/events?project_id=${PROJECT_ID}`),
         fetchJson(`/api/insights?project_id=${PROJECT_ID}`),
         fetchJson(`/api/frustration?project_id=${PROJECT_ID}`),
         fetchJson(`/api/dead-clicks?project_id=${PROJECT_ID}`),
