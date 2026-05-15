@@ -592,6 +592,92 @@ app.get("/api/ai-summary", (req, res) => {
   );
 });
 
+app.get("/api/session-timeline", (req, res) => {
+  const projectId = req.query.project_id || "store_001";
+
+  db.all(
+    `
+    SELECT 
+      event_type,
+      page_url,
+      element_text,
+      funnel_step,
+      alert_type,
+      alert_message,
+      created_at
+    FROM events
+    WHERE project_id = ?
+    ORDER BY created_at ASC
+    LIMIT 50
+    `,
+    [projectId],
+    (err, rows) => {
+      if (err) {
+        console.log(err);
+        return res.status(500).json({ error: "Database error" });
+      }
+
+      const timeline = rows.map(row => {
+        let title = "حدث جديد";
+        let description = row.element_text || "";
+
+        if (row.event_type === "page_view") {
+          title = "دخول الصفحة";
+          description = "المستخدم فتح صفحة المتجر التجريبي.";
+        }
+
+        if (row.event_type === "click") {
+          title = "نقرة مستخدم";
+          description = `ضغط على: ${row.element_text || "عنصر غير معروف"}`;
+        }
+
+        if (row.event_type === "heatmap_click") {
+          title = "نقطة على خريطة النقرات";
+          description = `تم تسجيل ضغط على: ${row.element_text || "عنصر غير معروف"}`;
+        }
+
+        if (row.event_type === "funnel_step") {
+          title = "خطوة في مسار العميل";
+          description = `انتقل المستخدم إلى مرحلة: ${row.funnel_step || "غير معروفة"}`;
+        }
+
+        if (row.event_type === "rage_click") {
+          title = "نقرات متكررة";
+          description = `تفاعل متكرر مع: ${row.element_text || "عنصر غير معروف"}`;
+        }
+
+        if (row.event_type === "dead_click") {
+          title = "نقرة على عنصر غير تفاعلي";
+          description = `العنصر: ${row.element_text || "غير معروف"}`;
+        }
+
+        if (row.event_type === "page_exit") {
+          title = "مغادرة الصفحة";
+          description = "المستخدم غادر الصفحة.";
+        }
+
+        if (row.event_type === "smart_alert") {
+          title = "تنبيه ذكي";
+          description = row.alert_message || "تم رصد سلوك يحتاج مراجعة.";
+        }
+
+        return {
+          title,
+          description,
+          event_type: row.event_type,
+          page_url: row.page_url,
+          created_at: row.created_at
+        };
+      });
+
+      res.json({
+        success: true,
+        timeline
+      });
+    }
+  );
+});
+
 app.listen(PORT, () => {
   console.log(`Basirah Analytics running on http://localhost:${PORT}`);
 });
