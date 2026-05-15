@@ -1,11 +1,13 @@
 (function () {
   const currentScript = document.currentScript;
+
   const projectId =
     currentScript.getAttribute("data-project-id") || "demo_project";
 
   const TRACK_ENDPOINT = "/track";
 
   const startTime = Date.now();
+
   let exitEventSent = false;
   let maxScroll = 0;
   let recentClicks = [];
@@ -20,6 +22,19 @@
 
   function getTimeSpent() {
     return Math.round((Date.now() - startTime) / 1000);
+  }
+
+  function getPageMetrics() {
+    return {
+      viewport_width: window.innerWidth,
+      viewport_height: window.innerHeight,
+
+      page_width: document.documentElement.scrollWidth,
+      page_height: document.documentElement.scrollHeight,
+
+      scroll_x: window.scrollX,
+      scroll_y: window.scrollY
+    };
   }
 
   function sendEvent(eventData) {
@@ -45,16 +60,38 @@
   function baseEvent(eventType, extra = {}) {
     return {
       project_id: projectId,
+
       event_type: eventType,
+
       page_url: window.location.href,
+
       element_text: extra.element_text || null,
+
       time_spent: extra.time_spent || null,
+
       user_agent: navigator.userAgent,
 
       screen_width: window.innerWidth,
       screen_height: window.innerHeight,
+
       click_x: extra.click_x || null,
       click_y: extra.click_y || null,
+
+      page_x: extra.page_x || null,
+      page_y: extra.page_y || null,
+
+      viewport_width: extra.viewport_width || window.innerWidth,
+      viewport_height: extra.viewport_height || window.innerHeight,
+
+      page_width:
+        extra.page_width || document.documentElement.scrollWidth,
+
+      page_height:
+        extra.page_height || document.documentElement.scrollHeight,
+
+      scroll_x: extra.scroll_x || window.scrollX,
+      scroll_y: extra.scroll_y || window.scrollY,
+
       scroll_depth: extra.scroll_depth || maxScroll,
 
       funnel_step: extra.funnel_step || null,
@@ -72,9 +109,13 @@
       time: now
     });
 
-    recentClicks = recentClicks.filter(click => now - click.time < 3000);
+    recentClicks = recentClicks.filter(
+      (click) => now - click.time < 3000
+    );
 
-    const sameClicks = recentClicks.filter(click => click.text === clickText);
+    const sameClicks = recentClicks.filter(
+      (click) => click.text === clickText
+    );
 
     return sameClicks.length >= 3;
   }
@@ -150,11 +191,16 @@
 
   window.addEventListener("scroll", function () {
     const scrollTop = window.scrollY;
+
     const documentHeight =
-      document.documentElement.scrollHeight - window.innerHeight;
+      document.documentElement.scrollHeight -
+      window.innerHeight;
 
     if (documentHeight > 0) {
-      const scrollPercent = Math.round((scrollTop / documentHeight) * 100);
+      const scrollPercent = Math.round(
+        (scrollTop / documentHeight) * 100
+      );
+
       maxScroll = Math.max(maxScroll, scrollPercent);
     }
   });
@@ -170,44 +216,53 @@
 
     const cleanText = text.substring(0, 100);
 
+    const metrics = getPageMetrics();
+
     const clickX = event.clientX;
     const clickY = event.clientY;
 
-    const funnelStep = detectFunnelStep(cleanText, window.location.href);
+    const pageX = event.pageX;
+    const pageY = event.pageY;
 
-    sendEvent(
-      baseEvent("click", {
-        element_text: cleanText,
-        click_x: clickX,
-        click_y: clickY,
-        funnel_step: funnelStep
-      })
+    const funnelStep = detectFunnelStep(
+      cleanText,
+      window.location.href
     );
 
-    sendEvent(
-      baseEvent("heatmap_click", {
-        element_text: cleanText,
-        click_x: clickX,
-        click_y: clickY
-      })
-    );
+    const sharedData = {
+      element_text: cleanText,
+
+      click_x: clickX,
+      click_y: clickY,
+
+      page_x: pageX,
+      page_y: pageY,
+
+      viewport_width: metrics.viewport_width,
+      viewport_height: metrics.viewport_height,
+
+      page_width: metrics.page_width,
+      page_height: metrics.page_height,
+
+      scroll_x: metrics.scroll_x,
+      scroll_y: metrics.scroll_y,
+
+      funnel_step: funnelStep
+    };
+
+    sendEvent(baseEvent("click", sharedData));
+
+    sendEvent(baseEvent("heatmap_click", sharedData));
 
     if (funnelStep) {
       sendEvent(
-        baseEvent("funnel_step", {
-          element_text: cleanText,
-          funnel_step: funnelStep
-        })
+        baseEvent("funnel_step", sharedData)
       );
     }
 
     if (!isClickableElement(target)) {
       sendEvent(
-        baseEvent("dead_click", {
-          element_text: cleanText,
-          click_x: clickX,
-          click_y: clickY
-        })
+        baseEvent("dead_click", sharedData)
       );
 
       sendSmartAlert(
@@ -218,11 +273,7 @@
 
     if (detectRageClick(cleanText)) {
       sendEvent(
-        baseEvent("rage_click", {
-          element_text: cleanText,
-          click_x: clickX,
-          click_y: clickY
-        })
+        baseEvent("rage_click", sharedData)
       );
 
       sendSmartAlert(
@@ -238,13 +289,17 @@
     let summarySignal = "";
 
     if (timeSpent < 10) {
-      summarySignal = "المستخدم غادر بسرعة. قد تكون الصفحة غير واضحة أو غير جذابة.";
+      summarySignal =
+        "المستخدم غادر بسرعة. قد تكون الصفحة غير واضحة أو غير جذابة.";
     } else if (timeSpent > 60 && maxScroll < 30) {
-      summarySignal = "المستخدم بقي طويلًا لكنه لم يتفاعل كثيرًا. قد تكون الصفحة مربكة.";
+      summarySignal =
+        "المستخدم بقي طويلًا لكنه لم يتفاعل كثيرًا. قد تكون الصفحة مربكة.";
     } else if (maxScroll > 80) {
-      summarySignal = "المستخدم قرأ معظم الصفحة. يوجد اهتمام بالمحتوى.";
+      summarySignal =
+        "المستخدم قرأ معظم الصفحة. يوجد اهتمام بالمحتوى.";
     } else {
-      summarySignal = "سلوك المستخدم متوسط ويحتاج تحليل إضافي.";
+      summarySignal =
+        "سلوك المستخدم متوسط ويحتاج تحليل إضافي.";
     }
 
     sendBeaconEvent(
@@ -275,18 +330,22 @@
       sendBeaconEvent(
         baseEvent("smart_alert", {
           alert_type: "quick_exit",
-          alert_message: "المستخدم غادر الصفحة خلال وقت قصير جدًا.",
+          alert_message:
+            "المستخدم غادر الصفحة خلال وقت قصير جدًا.",
           element_text: "Quick exit detected"
         })
       );
     }
   }
 
-  document.addEventListener("visibilitychange", function () {
-    if (document.visibilityState === "hidden") {
-      sendExitEvent();
+  document.addEventListener(
+    "visibilitychange",
+    function () {
+      if (document.visibilityState === "hidden") {
+        sendExitEvent();
+      }
     }
-  });
+  );
 
   window.addEventListener("pagehide", function () {
     sendExitEvent();

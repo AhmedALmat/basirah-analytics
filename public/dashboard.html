@@ -196,7 +196,6 @@
       max-height: 300px;
     }
 
-    /* Heatmap final professional layout */
     .heatmap-shell {
       border-radius: 22px;
       overflow: hidden;
@@ -239,17 +238,17 @@
       padding: 24px;
       direction: ltr;
       scroll-behavior: smooth;
-      scrollbar-width: thin;
+      scrollbar-width: auto;
       scrollbar-color: #38bdf8 rgba(255,255,255,0.08);
     }
 
     .heatmap-area::-webkit-scrollbar {
-      width: 16px;
-      height: 12px;
+      width: 18px;
+      height: 14px;
     }
 
     .heatmap-area::-webkit-scrollbar-track {
-      background: rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.1);
       border-radius: 999px;
       border: 4px solid #020617;
     }
@@ -691,22 +690,14 @@
       });
     }
 
-    function getPointValue(point, keys, fallback) {
-      for (const key of keys) {
-        if (point[key] !== undefined && point[key] !== null && !Number.isNaN(Number(point[key]))) {
-          return Number(point[key]);
-        }
-      }
-      return fallback;
-    }
-
     function renderHeatmap(heatmapData) {
       latestHeatmapData = heatmapData;
 
       const imageLayer = document.getElementById("heatmapImage");
-      const img = document.getElementById("heatmapScreenshot");
 
-      imageLayer.querySelectorAll(".heat-dot, .heatmap-empty").forEach(el => el.remove());
+      imageLayer
+        .querySelectorAll(".heat-dot, .heatmap-empty")
+        .forEach(el => el.remove());
 
       const points = heatmapData.heatmap_points || [];
 
@@ -718,46 +709,23 @@
         return;
       }
 
-      const naturalWidth = img.naturalWidth || img.clientWidth || 1;
-      const naturalHeight = img.naturalHeight || img.clientHeight || 1;
-
       points.forEach(point => {
         const dot = document.createElement("div");
         dot.className = "heat-dot";
 
-        const rawX = getPointValue(point, ["page_x", "document_x", "absolute_x", "click_x", "x"], 0);
-        const rawY = getPointValue(point, ["page_y", "document_y", "absolute_y", "click_y", "y"], 0);
+        const xPercent = point.page_width
+          ? (point.page_x / point.page_width) * 100
+          : 50;
 
-        const scrollY = getPointValue(point, ["scroll_y", "scrollY"], 0);
-        const scrollX = getPointValue(point, ["scroll_x", "scrollX"], 0);
+        const yPercent = point.page_height
+          ? (point.page_y / point.page_height) * 100
+          : 50;
 
-        const baseWidth = getPointValue(
-          point,
-          ["page_width", "document_width", "screen_width", "viewport_width"],
-          naturalWidth
-        );
+        const safeX = Math.min(Math.max(xPercent, 0), 100);
+        const safeY = Math.min(Math.max(yPercent, 0), 100);
 
-        const baseHeight = getPointValue(
-          point,
-          ["page_height", "document_height"],
-          null
-        );
-
-        const viewportHeight = getPointValue(point, ["screen_height", "viewport_height"], naturalHeight);
-
-        const absoluteX = rawX + scrollX;
-        const absoluteY = rawY + scrollY;
-
-        const finalBaseHeight = baseHeight || Math.max(viewportHeight, naturalHeight);
-
-        let xPercent = (absoluteX / baseWidth) * 100;
-        let yPercent = (absoluteY / finalBaseHeight) * 100;
-
-        xPercent = Math.min(Math.max(xPercent, 0), 100);
-        yPercent = Math.min(Math.max(yPercent, 0), 100);
-
-        dot.style.left = `${xPercent}%`;
-        dot.style.top = `${yPercent}%`;
+        dot.style.left = `${safeX}%`;
+        dot.style.top = `${safeY}%`;
 
         const clicks = Number(point.clicks || point.total || 1);
         const size = Math.min(18 + clicks * 3, 46);
