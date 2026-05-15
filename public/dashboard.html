@@ -230,21 +230,67 @@
     }
 
     .heatmap-area {
-      position: relative;
-      height: 420px;
+      height: 640px;
+      overflow-y: scroll;
+      overflow-x: auto;
       background:
-        linear-gradient(90deg, rgba(148, 163, 184, 0.07) 1px, transparent 1px),
-        linear-gradient(rgba(148, 163, 184, 0.07) 1px, transparent 1px),
-        radial-gradient(circle at 35% 35%, rgba(56, 189, 248, 0.08), transparent 35%),
-        rgba(2, 6, 23, 0.72);
-      background-size:
-        42px 42px,
-        42px 42px,
-        auto,
-        auto;
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 0 0 22px 22px;
+        linear-gradient(135deg, rgba(2, 6, 23, 0.88), rgba(15, 23, 42, 0.88));
+      padding: 24px;
+      direction: ltr;
+      scroll-behavior: smooth;
+      scrollbar-width: auto;
+      scrollbar-color: #38bdf8 rgba(255,255,255,0.08);
+    }
+
+    .heatmap-area::-webkit-scrollbar {
+      width: 18px;
+      height: 14px;
+    }
+
+    .heatmap-area::-webkit-scrollbar-track {
+      background: rgba(255,255,255,0.1);
+      border-radius: 999px;
+      border: 4px solid #020617;
+    }
+
+    .heatmap-area::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, #38bdf8, #2563eb);
+      border-radius: 999px;
+      border: 4px solid #020617;
+    }
+
+    .heatmap-area::-webkit-scrollbar-thumb:hover {
+      background: linear-gradient(180deg, #7dd3fc, #3b82f6);
+    }
+
+    .heatmap-image {
+      position: relative;
+      width: min(100%, 1180px);
+      margin: 0 auto;
+      background: #ffffff;
+      border-radius: 18px;
       overflow: hidden;
+      direction: rtl;
+      box-shadow:
+        0 24px 60px rgba(0, 0, 0, 0.32),
+        0 0 0 1px rgba(255,255,255,0.08);
+    }
+
+    .heatmap-image img {
+      width: 100%;
+      height: auto;
+      display: block;
+      opacity: 0.92;
+      filter: brightness(0.94) contrast(1.04);
+    }
+
+    .heatmap-image::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(2, 6, 23, 0.06);
+      pointer-events: none;
+      z-index: 2;
     }
 
     .heat-dot {
@@ -332,6 +378,73 @@
       font-size: 13px;
     }
 
+
+    .timeline-list {
+      position: relative;
+      display: grid;
+      gap: 14px;
+      margin-top: 10px;
+    }
+
+    .timeline-item {
+      position: relative;
+      display: grid;
+      grid-template-columns: 42px 1fr;
+      gap: 14px;
+      align-items: flex-start;
+      padding: 16px;
+      border-radius: 18px;
+      background: rgba(15, 23, 42, 0.72);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02);
+    }
+
+    .timeline-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.24);
+      color: #7dd3fc;
+      font-size: 16px;
+    }
+
+    .timeline-content strong {
+      display: block;
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .timeline-content p {
+      margin: 0;
+      color: #cbd5e1;
+      font-size: 13px;
+      line-height: 1.8;
+    }
+
+    .timeline-meta {
+      display: inline-block;
+      margin-top: 8px;
+      color: #64748b;
+      font-size: 11.5px;
+      direction: ltr;
+    }
+
+    .timeline-badge {
+      display: inline-block;
+      margin-inline-start: 8px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(56, 189, 248, 0.10);
+      color: #7dd3fc;
+      font-size: 11px;
+      border: 1px solid rgba(56, 189, 248, 0.18);
+    }
+
     .clear-data-wrapper {
       text-align: center;
       margin: 30px 0 10px;
@@ -393,7 +506,8 @@
       }
 
       .heatmap-area {
-        height: 340px;
+        height: 500px;
+        padding: 14px;
       }
 
       .heatmap-toolbar {
@@ -477,15 +591,28 @@
 
     <div class="section">
       <h2>خريطة النقرات</h2>
-      <p class="section-subtitle">النقاط الحمراء تمثل أماكن ضغط المستخدمين داخل صفحة المتجر التجريبي بشكل وصفي.</p>
+      <p class="section-subtitle">النقاط الحمراء تمثل أماكن ضغط المستخدمين داخل صفحة المتجر التجريبي.</p>
 
       <div class="heatmap-shell">
         <div class="heatmap-toolbar">
-          <strong>عرض وصفي لخريطة النقرات</strong>
-          <span class="scroll-hint">توزيع تقريبي لمواضع ضغط المستخدمين</span>
+          <strong>عرض مباشر لخريطة النقرات فوق صفحة المتجر</strong>
+          <span class="scroll-hint">مرّر داخل الإطار لرؤية كامل الصفحة ↓</span>
         </div>
 
-        <div id="heatmapArea" class="heatmap-area"></div>
+        <div id="heatmapArea" class="heatmap-area">
+          <div id="heatmapImage" class="heatmap-image">
+            <img id="heatmapScreenshot" src="/test-site-screenshot.png" alt="خريطة نقرات المتجر التجريبي">
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="section">
+      <h2>رحلة المستخدم</h2>
+      <p class="section-subtitle">تسلسل مبسط يوضح كيف تحرك المستخدم داخل الموقع التجريبي.</p>
+      <div id="sessionTimeline" class="timeline-list">
+        <div class="empty">جاري تحميل رحلة المستخدم...</div>
       </div>
     </div>
 
@@ -671,18 +798,19 @@
     function renderHeatmap(heatmapData) {
       latestHeatmapData = heatmapData;
 
-      const area = document.getElementById("heatmapArea");
+      const imageLayer = document.getElementById("heatmapImage");
 
-      area.innerHTML = "";
+      imageLayer
+        .querySelectorAll(".heat-dot, .heatmap-empty")
+        .forEach(el => el.remove());
 
       const points = heatmapData.heatmap_points || [];
 
-      if (!points.length) {
-        area.innerHTML = `
-          <div class="heatmap-empty">
-            لا توجد بيانات خريطة نقرات بعد.
-          </div>
-        `;
+      if (points.length === 0) {
+        const empty = document.createElement("div");
+        empty.className = "heatmap-empty";
+        empty.innerText = "لا توجد بيانات خريطة نقرات بعد.";
+        imageLayer.appendChild(empty);
         return;
       }
 
@@ -692,14 +820,10 @@
 
         const xPercent = point.page_width
           ? (point.page_x / point.page_width) * 100
-          : point.screen_width
-          ? (point.click_x / point.screen_width) * 100
           : 50;
 
         const yPercent = point.page_height
           ? (point.page_y / point.page_height) * 100
-          : point.screen_height
-          ? (point.click_y / point.screen_height) * 100
           : 50;
 
         const safeX = Math.min(Math.max(xPercent, 0), 100);
@@ -714,9 +838,77 @@
         dot.style.width = `${size}px`;
         dot.style.height = `${size}px`;
 
-        area.appendChild(dot);
+        imageLayer.appendChild(dot);
       });
     }
+
+
+    function getTimelineIcon(eventType) {
+      const icons = {
+        page_view: "👁️",
+        click: "👆",
+        heatmap_click: "🔥",
+        funnel_step: "🧭",
+        rage_click: "⚠️",
+        dead_click: "❌",
+        page_exit: "🚪",
+        smart_alert: "🤖",
+        ai_summary_signal: "🧠"
+      };
+
+      return icons[eventType] || "•";
+    }
+
+    function formatTimelineTime(value) {
+      if (!value) return "";
+
+      const date = new Date(value);
+
+      if (Number.isNaN(date.getTime())) {
+        return value;
+      }
+
+      return date.toLocaleString("ar-SA", {
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        year: "numeric",
+        month: "short",
+        day: "numeric"
+      });
+    }
+
+    function renderSessionTimeline(timelineData) {
+      const container = document.getElementById("sessionTimeline");
+      const timeline = timelineData.timeline || [];
+
+      if (!timeline.length) {
+        showEmpty(container, "لا توجد رحلة مستخدم مسجلة بعد.");
+        return;
+      }
+
+      container.innerHTML = "";
+
+      const recentTimeline = timeline.slice(-12).reverse();
+
+      recentTimeline.forEach(item => {
+        const div = document.createElement("div");
+        div.className = "timeline-item";
+
+        div.innerHTML = `
+          <div class="timeline-icon">${getTimelineIcon(item.event_type)}</div>
+          <div class="timeline-content">
+            <strong>${item.title || "حدث جديد"}</strong>
+            <p>${item.description || "تم تسجيل حدث داخل الموقع."}</p>
+            <span class="timeline-meta">${formatTimelineTime(item.created_at)}</span>
+            <span class="timeline-badge">${item.event_type || "event"}</span>
+          </div>
+        `;
+
+        container.appendChild(div);
+      });
+    }
+
 
     async function clearData() {
       if (!confirm("هل تريد مسح بيانات التجربة؟")) return;
@@ -742,7 +934,8 @@
         funnel,
         heatmap,
         alerts,
-        aiSummary
+        aiSummary,
+        sessionTimeline
       ] = await Promise.all([
         fetchJson("/api/events"),
         fetchJson(`/api/insights?project_id=${PROJECT_ID}`),
@@ -751,7 +944,8 @@
         fetchJson(`/api/funnel?project_id=${PROJECT_ID}`),
         fetchJson(`/api/heatmap?project_id=${PROJECT_ID}`),
         fetchJson(`/api/alerts?project_id=${PROJECT_ID}`),
-        fetchJson(`/api/ai-summary?project_id=${PROJECT_ID}`)
+        fetchJson(`/api/ai-summary?project_id=${PROJECT_ID}`),
+        fetchJson(`/api/session-timeline?project_id=${PROJECT_ID}`)
       ]);
 
       document.getElementById("totalEvents").innerText = events.length;
@@ -764,7 +958,14 @@
 
       renderExitChart(insights);
       renderFunnelChart(funnel);
-      renderHeatmap(heatmap);
+
+      const heatmapImg = document.getElementById("heatmapScreenshot");
+
+      if (heatmapImg.complete) {
+        renderHeatmap(heatmap);
+      } else {
+        heatmapImg.onload = () => renderHeatmap(heatmap);
+      }
 
       const frustrationContainer = document.getElementById("frustrationContainer");
 
