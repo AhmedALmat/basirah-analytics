@@ -1,323 +1,192 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <title>Basirah Analytics | AI UX Intelligence</title>
-
-  <style>
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f8fafc;
-      color: #0f172a;
-      direction: rtl;
-    }
-
-    .navbar {
-      background: #0f172a;
-      color: white;
-      padding: 22px 48px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .arabic-logo {
-      font-size: 28px;
-      font-weight: 800;
-    }
-
-    .english-logo {
-      direction: ltr;
-      font-size: 20px;
-      font-weight: 700;
-    }
-
-    .hero {
-      padding: 90px 48px;
-      background: linear-gradient(135deg, #0f172a, #1e293b);
-      color: white;
-      text-align: center;
-    }
-
-    .hero h1 {
-      font-size: 48px;
-      margin: 0 0 20px;
-      line-height: 1.3;
-    }
-
-    .hero p {
-      max-width: 850px;
-      margin: 0 auto 35px;
-      font-size: 20px;
-      color: #d1d5db;
-      line-height: 1.9;
-    }
-
-    .buttons {
-      display: flex;
-      gap: 16px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    .btn {
-      text-decoration: none;
-      padding: 15px 26px;
-      border-radius: 12px;
-      font-weight: bold;
-      display: inline-block;
-    }
-
-    .btn-primary {
-      background: #22c55e;
-      color: white;
-    }
-
-    .btn-secondary {
-      background: white;
-      color: #0f172a;
-    }
-
-    .section {
-      padding: 70px 48px;
-      max-width: 1200px;
-      margin: auto;
-    }
-
-    .section h2 {
-      text-align: center;
-      font-size: 34px;
-      margin-bottom: 18px;
-    }
-
-    .section-desc {
-      text-align: center;
-      color: #64748b;
-      font-size: 18px;
-      max-width: 750px;
-      margin: 0 auto 45px;
-      line-height: 1.8;
-    }
-
-    .features {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 22px;
-    }
-
-    .card {
-      background: white;
-      border-radius: 18px;
-      padding: 28px;
-      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
-      border: 1px solid #e5e7eb;
-    }
-
-    .card h3 {
-      margin-top: 0;
-      font-size: 21px;
-    }
-
-    .card p {
-      color: #64748b;
-      line-height: 1.8;
-    }
-
-    .value-box {
-      background: #ecfdf5;
-      border-right: 6px solid #22c55e;
-      border-radius: 18px;
-      padding: 30px;
-      font-size: 20px;
-      line-height: 2;
-      color: #064e3b;
-    }
-
-    .english-section {
-      direction: ltr;
-      text-align: left;
-      background: white;
-      border-radius: 18px;
-      padding: 30px;
-      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
-      line-height: 1.8;
-      color: #334155;
-    }
-
-    .cta {
-      background: #0f172a;
-      color: white;
-      text-align: center;
-      padding: 70px 48px;
-    }
-
-    .cta h2 {
-      font-size: 36px;
-      margin-bottom: 18px;
-    }
-
-    .cta p {
-      color: #cbd5e1;
-      font-size: 18px;
-      margin-bottom: 30px;
-    }
-
-    .footer {
-      padding: 24px 48px;
-      background: #020617;
-      color: #94a3b8;
-      text-align: center;
-      font-size: 14px;
-    }
-
-    @media (max-width: 700px) {
-      .hero h1 {
-        font-size: 34px;
-      }
-
-      .hero p {
-        font-size: 17px;
-      }
-
-      .navbar {
-        padding: 18px 22px;
-      }
-
-      .arabic-logo {
-        font-size: 24px;
-      }
-
-      .english-logo {
-        font-size: 16px;
-      }
-    }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Basirah AI</title>
+  <link rel="stylesheet" href="landing.css" />
 </head>
 
 <body>
 
-  <div class="navbar">
-    <div class="arabic-logo">بصيرة</div>
-    <div class="english-logo">Basirah Analytics</div>
-  </div>
+  <nav class="navbar">
+
+    <div class="nav-links">
+      <a href="#features">المميزات</a>
+      <a href="#how">كيف يعمل</a>
+      <a href="#demo">تجربة</a>
+      <a href="#contact" class="nav-btn">ابدأ الآن</a>
+    </div>
+
+    <div class="brand">
+      <span class="brand-en">Basirah AI</span>
+      <span class="brand-ar">بصيرة</span>
+    </div>
+
+  </nav>
 
   <section class="hero">
-    <h1>افهم لماذا يغادر عملاؤك قبل الشراء</h1>
 
-    <p>
-      Basirah Analytics هي منصة ذكية لتحليل تجربة المستخدم، تساعدك على اكتشاف
-      نقرات الإحباط، العناصر المربكة، نقاط الخروج، ومسار التحويل داخل موقعك أو متجرك.
-    </p>
+    <div class="hero-content">
 
-    <div class="buttons">
-      <a class="btn btn-primary" href="/dashboard.html">فتح لوحة التحكم</a>
-      <a class="btn btn-secondary" href="/test-site.html">تجربة العرض التجريبي</a>
+      <p class="badge">
+        تحليلات ذكية لفهم سلوك المستخدمين
+      </p>
+
+      <h1>
+        اكتشف لماذا يغادر عملاؤك موقعك
+        <span>قبل أن تخسرهم</span>
+      </h1>
+
+      <p class="hero-text">
+        تساعدك Basirah AI على فهم سلوك المستخدمين،
+        واكتشاف نقاط الإحباط، والنقرات الميتة،
+        وأسباب مغادرة العملاء باستخدام الذكاء الاصطناعي.
+      </p>
+
+      <div class="hero-buttons">
+        <a href="/dashboard.html" class="primary-btn">
+          جرّب الديمو
+        </a>
+
+        <a href="#contact" class="secondary-btn">
+          اطلب تجربة مجانية
+        </a>
+      </div>
+
     </div>
+
   </section>
 
-  <section class="section">
-    <h2>ما هو Basirah Analytics؟</h2>
+  <section class="section" id="how">
 
-    <p class="section-desc">
-      منصة UX Intelligence لا تكتفي بعرض الأرقام، بل تحوّل سلوك المستخدمين إلى
-      مؤشرات واضحة تساعدك على تحسين تجربة العميل وزيادة التحويل.
+    <p class="section-label">
+      كيف يعمل؟
     </p>
 
-    <div class="value-box">
-      بصيرة تساعد أصحاب المتاجر، التطبيقات، والمنتجات الرقمية على معرفة أين يتعثر المستخدم،
-      ولماذا يضغط أكثر من مرة، وأين يغادر، وما الصفحات أو العناصر التي تحتاج إلى تحسين.
+    <h2>
+      إعداد بسيط… وتحليلات قوية
+    </h2>
+
+    <div class="steps">
+
+      <div class="card">
+        <span>01</span>
+        <h3>أضف كود التتبع</h3>
+        <p>
+          أضف سكربت Basirah AI إلى موقعك خلال دقائق.
+        </p>
+      </div>
+
+      <div class="card">
+        <span>02</span>
+        <h3>راقب سلوك المستخدمين</h3>
+        <p>
+          تتبع النقرات، الخروج، التشتت،
+          ومشاكل تجربة المستخدم تلقائياً.
+        </p>
+      </div>
+
+      <div class="card">
+        <span>03</span>
+        <h3>احصل على توصيات ذكية</h3>
+        <p>
+          يحلل Basirah AI البيانات ويعطيك
+          اقتراحات لتحسين التحويل وتجربة المستخدم.
+        </p>
+      </div>
+
     </div>
+
   </section>
 
-  <section class="section">
-    <h2>المزايا الرئيسية</h2>
+  <section class="section" id="features">
 
-    <p class="section-desc">
-      تم تصميم المنصة لاكتشاف مشاكل تجربة المستخدم التي لا تظهر بوضوح في أدوات التحليل التقليدية.
+    <p class="section-label">
+      لماذا Basirah AI؟
     </p>
+
+    <h2>
+      افهم عملاءك بذكاء… وليس بالأرقام فقط
+    </h2>
 
     <div class="features">
 
       <div class="card">
-        <h3>Rage Click Detection</h3>
+        <h3>اكتشاف إحباط المستخدمين</h3>
         <p>
-          اكتشاف النقرات المتكررة بسرعة على نفس العنصر، والتي قد تدل على إحباط المستخدم أو عدم استجابة الزر.
+          اكتشف النقرات المتكررة والمشاكل
+          التي تزعج العملاء داخل موقعك.
         </p>
       </div>
 
       <div class="card">
-        <h3>Dead Click Detection</h3>
+        <h3>معرفة أسباب مغادرة العملاء</h3>
         <p>
-          معرفة العناصر التي يضغط عليها المستخدم رغم أنها ليست أزرارًا أو روابط، مما يكشف نقاط الالتباس في التصميم.
+          اعرف الصفحات التي يفقد فيها العملاء اهتمامهم.
         </p>
       </div>
 
       <div class="card">
-        <h3>Funnel Analysis</h3>
+        <h3>رفع معدل التحويل</h3>
         <p>
-          تحليل رحلة المستخدم من الزيارة إلى السلة والدفع والتواصل، لمعرفة أين يتوقف العميل.
+          حسّن تجربة المستخدم بناءً على
+          تحليلات حقيقية مدعومة بالذكاء الاصطناعي.
         </p>
       </div>
 
       <div class="card">
-        <h3>Heatmap Clicks</h3>
+        <h3>توصيات ذكية للأعمال</h3>
         <p>
-          عرض أماكن ضغط المستخدمين داخل الصفحة لمعرفة المناطق الأكثر تفاعلًا أو إرباكًا.
-        </p>
-      </div>
-
-      <div class="card">
-        <h3>AI Summary</h3>
-        <p>
-          تلخيص ذكي لسلوك المستخدمين يساعدك على فهم المشكلة بسرعة دون قراءة جداول معقدة.
-        </p>
-      </div>
-
-      <div class="card">
-        <h3>Smart Alerts</h3>
-        <p>
-          تنبيهات ذكية عند ظهور سلوك مقلق مثل الخروج السريع أو النقرات المتكررة.
+          حوّل بيانات المستخدمين إلى قرارات واضحة تساعد نمو مشروعك.
         </p>
       </div>
 
     </div>
+
   </section>
 
-  <section class="section">
-    <h2>Professional Product Description</h2>
+  <section class="demo" id="demo">
 
-    <div class="english-section">
-      <strong>Basirah Analytics</strong> is an AI-powered UX intelligence platform
-      that helps businesses understand user frustration, drop-off behavior,
-      dead clicks, rage clicks, and conversion funnels through real-time behavioral
-      tracking and actionable insights.
-      <br><br>
-      Instead of only showing numbers, Basirah transforms raw user behavior into
-      clear recommendations that help teams improve customer experience, reduce
-      friction, and increase conversions.
+    <div>
+
+      <p class="section-label">
+        تجربة مباشرة
+      </p>
+
+      <h2>
+        شاهد Basirah AI أثناء العمل
+      </h2>
+
+      <p>
+        استكشف لوحة تحكم حقيقية
+        تعرض تحليلات سلوك المستخدمين مباشرة.
+      </p>
+
     </div>
+
+    <a href="/dashboard.html" class="primary-btn">
+      فتح لوحة التحكم
+    </a>
+
   </section>
 
-  <section class="cta">
-    <h2>ابدأ بتحليل تجربة عملائك الآن</h2>
-    <p>افتح لوحة التحكم وشاهد كيف تتحول البيانات إلى قرارات واضحة.</p>
+  <section class="cta" id="contact">
 
-    <div class="buttons">
-      <a class="btn btn-primary" href="/dashboard.html">فتح Dashboard</a>
-      <a class="btn btn-secondary" href="/test-site.html">تجربة Demo</a>
-    </div>
+    <h2>
+      ابدأ بفهم عملائك اليوم
+    </h2>
+
+    <p>
+      انضم إلى الشركات التي تستخدم Basirah AI
+      لتحسين تجربة المستخدم وزيادة النمو.
+    </p>
+
+    <a href="mailto:your-email@example.com" class="primary-btn">
+      اطلب تجربة مجانية
+    </a>
+
   </section>
-
-  <div class="footer">
-    © 2026 Basirah Analytics — AI UX Intelligence Platform
-  </div>
 
 </body>
 </html>
