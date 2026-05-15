@@ -11,6 +11,23 @@ app.use(express.static("public"));
 
 const db = new sqlite3.Database("./basirah.db");
 
+function addColumnIfNotExists(columnName, columnType) {
+  db.all("PRAGMA table_info(events)", [], (err, columns) => {
+    if (err) {
+      console.log(err);
+      return;
+    }
+
+    const exists = columns.some(col => col.name === columnName);
+
+    if (!exists) {
+      db.run(`ALTER TABLE events ADD COLUMN ${columnName} ${columnType}`, [], err => {
+        if (err) console.log(err);
+      });
+    }
+  });
+}
+
 db.serialize(() => {
   db.run(`
     CREATE TABLE IF NOT EXISTS events (
@@ -30,6 +47,15 @@ db.serialize(() => {
       click_x INTEGER,
       click_y INTEGER,
 
+      page_x INTEGER,
+      page_y INTEGER,
+      page_width INTEGER,
+      page_height INTEGER,
+      viewport_width INTEGER,
+      viewport_height INTEGER,
+      scroll_x INTEGER,
+      scroll_y INTEGER,
+
       scroll_depth INTEGER,
 
       funnel_step TEXT,
@@ -40,6 +66,15 @@ db.serialize(() => {
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP
     )
   `);
+
+  addColumnIfNotExists("page_x", "INTEGER");
+  addColumnIfNotExists("page_y", "INTEGER");
+  addColumnIfNotExists("page_width", "INTEGER");
+  addColumnIfNotExists("page_height", "INTEGER");
+  addColumnIfNotExists("viewport_width", "INTEGER");
+  addColumnIfNotExists("viewport_height", "INTEGER");
+  addColumnIfNotExists("scroll_x", "INTEGER");
+  addColumnIfNotExists("scroll_y", "INTEGER");
 });
 
 app.post("/track", (req, res) => {
@@ -54,6 +89,14 @@ app.post("/track", (req, res) => {
     screen_height,
     click_x,
     click_y,
+    page_x,
+    page_y,
+    page_width,
+    page_height,
+    viewport_width,
+    viewport_height,
+    scroll_x,
+    scroll_y,
     scroll_depth,
     funnel_step,
     alert_type,
@@ -73,12 +116,20 @@ app.post("/track", (req, res) => {
       screen_height,
       click_x,
       click_y,
+      page_x,
+      page_y,
+      page_width,
+      page_height,
+      viewport_width,
+      viewport_height,
+      scroll_x,
+      scroll_y,
       scroll_depth,
       funnel_step,
       alert_type,
       alert_message
     )
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `,
     [
       project_id,
@@ -91,6 +142,14 @@ app.post("/track", (req, res) => {
       screen_height,
       click_x,
       click_y,
+      page_x,
+      page_y,
+      page_width,
+      page_height,
+      viewport_width,
+      viewport_height,
+      scroll_x,
+      scroll_y,
       scroll_depth,
       funnel_step,
       alert_type,
@@ -105,6 +164,20 @@ app.post("/track", (req, res) => {
       res.json({ success: true });
     }
   );
+});
+
+app.delete("/api/events", (req, res) => {
+  db.run("DELETE FROM events", [], function (err) {
+    if (err) {
+      console.log(err);
+      return res.status(500).json({ error: "Failed to clear events" });
+    }
+
+    res.json({
+      success: true,
+      message: "All events cleared"
+    });
+  });
 });
 
 app.get("/api/events", (req, res) => {
@@ -352,13 +425,43 @@ app.get("/api/heatmap", (req, res) => {
 
   db.all(
     `
-    SELECT page_url, click_x, click_y, screen_width, screen_height, COUNT(*) AS clicks
+    SELECT
+      page_url,
+      click_x,
+      click_y,
+      page_x,
+      page_y,
+      page_width,
+      page_height,
+      viewport_width,
+      viewport_height,
+      scroll_x,
+      scroll_y,
+      screen_width,
+      screen_height,
+      COUNT(*) AS clicks
     FROM events
     WHERE project_id = ?
     AND event_type = 'heatmap_click'
-    AND click_x IS NOT NULL
-    AND click_y IS NOT NULL
-    GROUP BY page_url, click_x, click_y, screen_width, screen_height
+    AND (
+      (page_x IS NOT NULL AND page_y IS NOT NULL)
+      OR
+      (click_x IS NOT NULL AND click_y IS NOT NULL)
+    )
+    GROUP BY
+      page_url,
+      click_x,
+      click_y,
+      page_x,
+      page_y,
+      page_width,
+      page_height,
+      viewport_width,
+      viewport_height,
+      scroll_x,
+      scroll_y,
+      screen_width,
+      screen_height
     ORDER BY clicks DESC
     LIMIT 200
     `,

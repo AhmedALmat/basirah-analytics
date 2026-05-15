@@ -378,6 +378,29 @@
       font-size: 13px;
     }
 
+    .clear-data-wrapper {
+      text-align: center;
+      margin: 30px 0 10px;
+    }
+
+    .clear-data-btn {
+      background: linear-gradient(135deg, #ef4444, #b91c1c);
+      color: white;
+      border: none;
+      padding: 13px 24px;
+      border-radius: 14px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 700;
+      box-shadow: 0 12px 30px rgba(239, 68, 68, 0.25);
+      transition: 0.25s ease;
+    }
+
+    .clear-data-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 36px rgba(239, 68, 68, 0.35);
+    }
+
     .footer-note {
       text-align: center;
       color: #64748b;
@@ -537,6 +560,12 @@
     <div class="section">
       <h2>توصيات تحسين تجربة المستخدم</h2>
       <div id="recommendations"></div>
+    </div>
+
+    <div class="clear-data-wrapper">
+      <button class="clear-data-btn" onclick="clearData()">
+        مسح بيانات التجربة
+      </button>
     </div>
 
     <div class="footer-note">
@@ -735,6 +764,21 @@
 
         imageLayer.appendChild(dot);
       });
+    }
+
+    async function clearData() {
+      if (!confirm("هل تريد مسح بيانات التجربة؟")) return;
+
+      const response = await fetch("/api/events", {
+        method: "DELETE"
+      });
+
+      if (!response.ok) {
+        alert("لم يتم مسح البيانات. تأكد من إضافة كود الحذف داخل server.js");
+        return;
+      }
+
+      location.reload();
     }
 
     async function loadDashboard() {
