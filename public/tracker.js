@@ -2,7 +2,7 @@
   const currentScript = document.currentScript;
 
   const projectId =
-    currentScript.getAttribute("data-project-id") || "demo_project";
+    currentScript?.getAttribute("data-project-id") || "store_001";
 
   const TRACK_ENDPOINT = "/track";
 
@@ -28,10 +28,8 @@
     return {
       viewport_width: window.innerWidth,
       viewport_height: window.innerHeight,
-
       page_width: document.documentElement.scrollWidth,
       page_height: document.documentElement.scrollHeight,
-
       scroll_x: window.scrollX,
       scroll_y: window.scrollY
     };
@@ -43,7 +41,8 @@
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify(eventData)
+      body: JSON.stringify(eventData),
+      keepalive: true
     }).catch((error) => {
       console.log("Tracking error:", error);
     });
@@ -60,15 +59,10 @@
   function baseEvent(eventType, extra = {}) {
     return {
       project_id: projectId,
-
       event_type: eventType,
-
       page_url: window.location.href,
-
       element_text: extra.element_text || null,
-
       time_spent: extra.time_spent || null,
-
       user_agent: navigator.userAgent,
 
       screen_width: window.innerWidth,
@@ -83,11 +77,8 @@
       viewport_width: extra.viewport_width || window.innerWidth,
       viewport_height: extra.viewport_height || window.innerHeight,
 
-      page_width:
-        extra.page_width || document.documentElement.scrollWidth,
-
-      page_height:
-        extra.page_height || document.documentElement.scrollHeight,
+      page_width: extra.page_width || document.documentElement.scrollWidth,
+      page_height: extra.page_height || document.documentElement.scrollHeight,
 
       scroll_x: extra.scroll_x || window.scrollX,
       scroll_y: extra.scroll_y || window.scrollY,
@@ -193,8 +184,7 @@
     const scrollTop = window.scrollY;
 
     const documentHeight =
-      document.documentElement.scrollHeight -
-      window.innerHeight;
+      document.documentElement.scrollHeight - window.innerHeight;
 
     if (documentHeight > 0) {
       const scrollPercent = Math.round(
@@ -214,29 +204,18 @@
       target.getAttribute("aria-label") ||
       target.tagName;
 
-    const cleanText = text.substring(0, 100);
+    const cleanText = String(text).substring(0, 100);
 
     const metrics = getPageMetrics();
-
-    const clickX = event.clientX;
-    const clickY = event.clientY;
-
-    const pageX = event.pageX;
-    const pageY = event.pageY;
-
-    const funnelStep = detectFunnelStep(
-      cleanText,
-      window.location.href
-    );
 
     const sharedData = {
       element_text: cleanText,
 
-      click_x: clickX,
-      click_y: clickY,
+      click_x: event.clientX,
+      click_y: event.clientY,
 
-      page_x: pageX,
-      page_y: pageY,
+      page_x: event.pageX,
+      page_y: event.pageY,
 
       viewport_width: metrics.viewport_width,
       viewport_height: metrics.viewport_height,
@@ -247,23 +226,18 @@
       scroll_x: metrics.scroll_x,
       scroll_y: metrics.scroll_y,
 
-      funnel_step: funnelStep
+      funnel_step: detectFunnelStep(cleanText, window.location.href)
     };
 
     sendEvent(baseEvent("click", sharedData));
-
     sendEvent(baseEvent("heatmap_click", sharedData));
 
-    if (funnelStep) {
-      sendEvent(
-        baseEvent("funnel_step", sharedData)
-      );
+    if (sharedData.funnel_step) {
+      sendEvent(baseEvent("funnel_step", sharedData));
     }
 
     if (!isClickableElement(target)) {
-      sendEvent(
-        baseEvent("dead_click", sharedData)
-      );
+      sendEvent(baseEvent("dead_click", sharedData));
 
       sendSmartAlert(
         "dead_click",
@@ -272,9 +246,7 @@
     }
 
     if (detectRageClick(cleanText)) {
-      sendEvent(
-        baseEvent("rage_click", sharedData)
-      );
+      sendEvent(baseEvent("rage_click", sharedData));
 
       sendSmartAlert(
         "rage_click",
@@ -330,22 +302,18 @@
       sendBeaconEvent(
         baseEvent("smart_alert", {
           alert_type: "quick_exit",
-          alert_message:
-            "المستخدم غادر الصفحة خلال وقت قصير جدًا.",
+          alert_message: "المستخدم غادر الصفحة خلال وقت قصير جدًا.",
           element_text: "Quick exit detected"
         })
       );
     }
   }
 
-  document.addEventListener(
-    "visibilitychange",
-    function () {
-      if (document.visibilityState === "hidden") {
-        sendExitEvent();
-      }
+  document.addEventListener("visibilitychange", function () {
+    if (document.visibilityState === "hidden") {
+      sendExitEvent();
     }
-  );
+  });
 
   window.addEventListener("pagehide", function () {
     sendExitEvent();

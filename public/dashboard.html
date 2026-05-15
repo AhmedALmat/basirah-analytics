@@ -621,7 +621,9 @@
   </div>
 
   <script>
-    const PROJECT_ID = "store_001";
+    const params = new URLSearchParams(window.location.search);
+
+    const PROJECT_ID = params.get("project") || "store_001";
 
     Chart.defaults.color = "#cbd5e1";
     Chart.defaults.borderColor = "rgba(148, 163, 184, 0.16)";
