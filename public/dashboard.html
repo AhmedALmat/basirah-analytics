@@ -230,67 +230,21 @@
     }
 
     .heatmap-area {
-      height: 640px;
-      overflow-y: scroll;
-      overflow-x: auto;
-      background:
-        linear-gradient(135deg, rgba(2, 6, 23, 0.88), rgba(15, 23, 42, 0.88));
-      padding: 24px;
-      direction: ltr;
-      scroll-behavior: smooth;
-      scrollbar-width: auto;
-      scrollbar-color: #38bdf8 rgba(255,255,255,0.08);
-    }
-
-    .heatmap-area::-webkit-scrollbar {
-      width: 18px;
-      height: 14px;
-    }
-
-    .heatmap-area::-webkit-scrollbar-track {
-      background: rgba(255,255,255,0.1);
-      border-radius: 999px;
-      border: 4px solid #020617;
-    }
-
-    .heatmap-area::-webkit-scrollbar-thumb {
-      background: linear-gradient(180deg, #38bdf8, #2563eb);
-      border-radius: 999px;
-      border: 4px solid #020617;
-    }
-
-    .heatmap-area::-webkit-scrollbar-thumb:hover {
-      background: linear-gradient(180deg, #7dd3fc, #3b82f6);
-    }
-
-    .heatmap-image {
       position: relative;
-      width: min(100%, 1180px);
-      margin: 0 auto;
-      background: #ffffff;
-      border-radius: 18px;
+      height: 420px;
+      background:
+        linear-gradient(90deg, rgba(148, 163, 184, 0.07) 1px, transparent 1px),
+        linear-gradient(rgba(148, 163, 184, 0.07) 1px, transparent 1px),
+        radial-gradient(circle at 35% 35%, rgba(56, 189, 248, 0.08), transparent 35%),
+        rgba(2, 6, 23, 0.72);
+      background-size:
+        42px 42px,
+        42px 42px,
+        auto,
+        auto;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 0 0 22px 22px;
       overflow: hidden;
-      direction: rtl;
-      box-shadow:
-        0 24px 60px rgba(0, 0, 0, 0.32),
-        0 0 0 1px rgba(255,255,255,0.08);
-    }
-
-    .heatmap-image img {
-      width: 100%;
-      height: auto;
-      display: block;
-      opacity: 0.92;
-      filter: brightness(0.94) contrast(1.04);
-    }
-
-    .heatmap-image::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: rgba(2, 6, 23, 0.06);
-      pointer-events: none;
-      z-index: 2;
     }
 
     .heat-dot {
@@ -320,6 +274,91 @@
       border: 1px dashed rgba(255, 255, 255, 0.14);
       font-size: 13px;
       backdrop-filter: blur(10px);
+    }
+
+    .timeline-list {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-top: 10px;
+    }
+
+    .timeline-item {
+      display: grid;
+      grid-template-columns: 42px 1fr;
+      gap: 14px;
+      align-items: start;
+      padding: 15px;
+      background: rgba(15, 23, 42, 0.68);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      box-shadow: 0 12px 26px rgba(0, 0, 0, 0.12);
+    }
+
+    .timeline-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.22), rgba(99, 102, 241, 0.18));
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #38bdf8;
+      font-size: 16px;
+      font-weight: 800;
+    }
+
+    .timeline-content h3 {
+      margin: 0 0 6px;
+      font-size: 14px;
+      color: #ffffff;
+    }
+
+    .timeline-content p {
+      margin: 0;
+      color: #cbd5e1;
+      font-size: 13px;
+      line-height: 1.8;
+    }
+
+    .timeline-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+      color: #94a3b8;
+      font-size: 11.5px;
+    }
+
+    .timeline-badge {
+      border: 1px solid rgba(56, 189, 248, 0.18);
+      background: rgba(56, 189, 248, 0.08);
+      color: #7dd3fc;
+      padding: 4px 9px;
+      border-radius: 999px;
+      direction: ltr;
+    }
+
+    .timeline-scroll {
+      max-height: 520px;
+      overflow-y: auto;
+      padding-left: 6px;
+    }
+
+    .timeline-scroll::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    .timeline-scroll::-webkit-scrollbar-track {
+      background: rgba(255,255,255,0.04);
+      border-radius: 999px;
+    }
+
+    .timeline-scroll::-webkit-scrollbar-thumb {
+      background: rgba(56, 189, 248, 0.45);
+      border-radius: 999px;
     }
 
     .box {
@@ -376,73 +415,6 @@
       border-radius: 13px;
       border: 1px dashed rgba(255, 255, 255, 0.12);
       font-size: 13px;
-    }
-
-
-    .timeline-list {
-      position: relative;
-      display: grid;
-      gap: 14px;
-      margin-top: 10px;
-    }
-
-    .timeline-item {
-      position: relative;
-      display: grid;
-      grid-template-columns: 42px 1fr;
-      gap: 14px;
-      align-items: flex-start;
-      padding: 16px;
-      border-radius: 18px;
-      background: rgba(15, 23, 42, 0.72);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02);
-    }
-
-    .timeline-icon {
-      width: 36px;
-      height: 36px;
-      border-radius: 14px;
-      display: grid;
-      place-items: center;
-      background: rgba(56, 189, 248, 0.12);
-      border: 1px solid rgba(56, 189, 248, 0.24);
-      color: #7dd3fc;
-      font-size: 16px;
-    }
-
-    .timeline-content strong {
-      display: block;
-      color: #ffffff;
-      font-size: 14px;
-      font-weight: 700;
-      margin-bottom: 6px;
-    }
-
-    .timeline-content p {
-      margin: 0;
-      color: #cbd5e1;
-      font-size: 13px;
-      line-height: 1.8;
-    }
-
-    .timeline-meta {
-      display: inline-block;
-      margin-top: 8px;
-      color: #64748b;
-      font-size: 11.5px;
-      direction: ltr;
-    }
-
-    .timeline-badge {
-      display: inline-block;
-      margin-inline-start: 8px;
-      padding: 3px 8px;
-      border-radius: 999px;
-      background: rgba(56, 189, 248, 0.10);
-      color: #7dd3fc;
-      font-size: 11px;
-      border: 1px solid rgba(56, 189, 248, 0.18);
     }
 
     .clear-data-wrapper {
@@ -506,13 +478,16 @@
       }
 
       .heatmap-area {
-        height: 500px;
-        padding: 14px;
+        height: 340px;
       }
 
       .heatmap-toolbar {
         flex-direction: column;
         align-items: flex-start;
+      }
+
+      .timeline-item {
+        grid-template-columns: 1fr;
       }
     }
   </style>
@@ -591,27 +566,22 @@
 
     <div class="section">
       <h2>خريطة النقرات</h2>
-      <p class="section-subtitle">النقاط الحمراء تمثل أماكن ضغط المستخدمين داخل صفحة المتجر التجريبي.</p>
+      <p class="section-subtitle">النقاط الحمراء تمثل أماكن ضغط المستخدمين داخل صفحة المتجر التجريبي بشكل وصفي.</p>
 
       <div class="heatmap-shell">
         <div class="heatmap-toolbar">
-          <strong>عرض مباشر لخريطة النقرات فوق صفحة المتجر</strong>
-          <span class="scroll-hint">مرّر داخل الإطار لرؤية كامل الصفحة ↓</span>
+          <strong>عرض وصفي لخريطة النقرات</strong>
+          <span class="scroll-hint">توزيع تقريبي لمواضع ضغط المستخدمين</span>
         </div>
 
-        <div id="heatmapArea" class="heatmap-area">
-          <div id="heatmapImage" class="heatmap-image">
-            <img id="heatmapScreenshot" src="/test-site-screenshot.png" alt="خريطة نقرات المتجر التجريبي">
-          </div>
-        </div>
+        <div id="heatmapArea" class="heatmap-area"></div>
       </div>
     </div>
 
-
     <div class="section">
       <h2>رحلة المستخدم</h2>
-      <p class="section-subtitle">تسلسل مبسط يوضح كيف تحرك المستخدم داخل الموقع التجريبي.</p>
-      <div id="sessionTimeline" class="timeline-list">
+      <p class="section-subtitle">تسلسل زمني مبسط يوضح أهم أحداث الجلسة داخل المتجر التجريبي.</p>
+      <div id="timelineContainer" class="timeline-scroll">
         <div class="empty">جاري تحميل رحلة المستخدم...</div>
       </div>
     </div>
@@ -701,6 +671,31 @@
       };
 
       return names[type] || type;
+    }
+
+    function timelineIcon(type) {
+      const icons = {
+        page_view: "↗",
+        click: "●",
+        heatmap_click: "◎",
+        funnel_step: "↪",
+        rage_click: "!",
+        dead_click: "×",
+        page_exit: "↘",
+        smart_alert: "⚡"
+      };
+
+      return icons[type] || "•";
+    }
+
+    function formatTimelineTime(value) {
+      if (!value) return "";
+      const date = new Date(value);
+      if (Number.isNaN(date.getTime())) return value;
+      return date.toLocaleTimeString("ar-SA", {
+        hour: "2-digit",
+        minute: "2-digit"
+      });
     }
 
     async function fetchJson(url) {
@@ -798,19 +793,18 @@
     function renderHeatmap(heatmapData) {
       latestHeatmapData = heatmapData;
 
-      const imageLayer = document.getElementById("heatmapImage");
+      const area = document.getElementById("heatmapArea");
 
-      imageLayer
-        .querySelectorAll(".heat-dot, .heatmap-empty")
-        .forEach(el => el.remove());
+      area.innerHTML = "";
 
       const points = heatmapData.heatmap_points || [];
 
-      if (points.length === 0) {
-        const empty = document.createElement("div");
-        empty.className = "heatmap-empty";
-        empty.innerText = "لا توجد بيانات خريطة نقرات بعد.";
-        imageLayer.appendChild(empty);
+      if (!points.length) {
+        area.innerHTML = `
+          <div class="heatmap-empty">
+            لا توجد بيانات خريطة نقرات بعد.
+          </div>
+        `;
         return;
       }
 
@@ -820,10 +814,14 @@
 
         const xPercent = point.page_width
           ? (point.page_x / point.page_width) * 100
+          : point.screen_width
+          ? (point.click_x / point.screen_width) * 100
           : 50;
 
         const yPercent = point.page_height
           ? (point.page_y / point.page_height) * 100
+          : point.screen_height
+          ? (point.click_y / point.screen_height) * 100
           : 50;
 
         const safeX = Math.min(Math.max(xPercent, 0), 100);
@@ -838,77 +836,38 @@
         dot.style.width = `${size}px`;
         dot.style.height = `${size}px`;
 
-        imageLayer.appendChild(dot);
+        area.appendChild(dot);
       });
     }
 
-
-    function getTimelineIcon(eventType) {
-      const icons = {
-        page_view: "👁️",
-        click: "👆",
-        heatmap_click: "🔥",
-        funnel_step: "🧭",
-        rage_click: "⚠️",
-        dead_click: "❌",
-        page_exit: "🚪",
-        smart_alert: "🤖",
-        ai_summary_signal: "🧠"
-      };
-
-      return icons[eventType] || "•";
-    }
-
-    function formatTimelineTime(value) {
-      if (!value) return "";
-
-      const date = new Date(value);
-
-      if (Number.isNaN(date.getTime())) {
-        return value;
-      }
-
-      return date.toLocaleString("ar-SA", {
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
-        year: "numeric",
-        month: "short",
-        day: "numeric"
-      });
-    }
-
-    function renderSessionTimeline(timelineData) {
-      const container = document.getElementById("sessionTimeline");
+    function renderTimeline(timelineData) {
+      const container = document.getElementById("timelineContainer");
       const timeline = timelineData.timeline || [];
 
       if (!timeline.length) {
-        showEmpty(container, "لا توجد رحلة مستخدم مسجلة بعد.");
+        showEmpty(container, "لا توجد أحداث كافية لعرض رحلة المستخدم بعد.");
         return;
       }
 
-      container.innerHTML = "";
-
-      const recentTimeline = timeline.slice(-12).reverse();
-
-      recentTimeline.forEach(item => {
-        const div = document.createElement("div");
-        div.className = "timeline-item";
-
-        div.innerHTML = `
-          <div class="timeline-icon">${getTimelineIcon(item.event_type)}</div>
-          <div class="timeline-content">
-            <strong>${item.title || "حدث جديد"}</strong>
-            <p>${item.description || "تم تسجيل حدث داخل الموقع."}</p>
-            <span class="timeline-meta">${formatTimelineTime(item.created_at)}</span>
-            <span class="timeline-badge">${item.event_type || "event"}</span>
-          </div>
-        `;
-
-        container.appendChild(div);
-      });
+      container.innerHTML = `
+        <div class="timeline-list">
+          ${timeline.slice().reverse().map(item => `
+            <div class="timeline-item">
+              <div class="timeline-icon">${timelineIcon(item.event_type)}</div>
+              <div class="timeline-content">
+                <h3>${item.title}</h3>
+                <p>${item.description}</p>
+                <div class="timeline-meta">
+                  <span class="timeline-badge">${item.event_type}</span>
+                  <span>${formatTimelineTime(item.created_at)}</span>
+                  <span>${simplifyPageName(item.page_url)}</span>
+                </div>
+              </div>
+            </div>
+          `).join("")}
+        </div>
+      `;
     }
-
 
     async function clearData() {
       if (!confirm("هل تريد مسح بيانات التجربة؟")) return;
@@ -935,7 +894,7 @@
         heatmap,
         alerts,
         aiSummary,
-        sessionTimeline
+        timeline
       ] = await Promise.all([
         fetchJson("/api/events"),
         fetchJson(`/api/insights?project_id=${PROJECT_ID}`),
@@ -958,14 +917,8 @@
 
       renderExitChart(insights);
       renderFunnelChart(funnel);
-
-      const heatmapImg = document.getElementById("heatmapScreenshot");
-
-      if (heatmapImg.complete) {
-        renderHeatmap(heatmap);
-      } else {
-        heatmapImg.onload = () => renderHeatmap(heatmap);
-      }
+      renderHeatmap(heatmap);
+      renderTimeline(timeline);
 
       const frustrationContainer = document.getElementById("frustrationContainer");
 
