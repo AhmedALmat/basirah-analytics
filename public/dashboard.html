@@ -198,20 +198,21 @@
 
     .heatmap-area {
       position: relative;
-      height: 520px;
+      min-height: 760px;
 
       background-image:
         linear-gradient(
-          rgba(2, 6, 23, 0.18),
-          rgba(2, 6, 23, 0.18)
+          rgba(2, 6, 23, 0.10),
+          rgba(2, 6, 23, 0.10)
         ),
         url("/test-site-screenshot.png");
 
-      background-size: 100% auto;
+      background-size: contain;
       background-position: top center;
       background-repeat: no-repeat;
+      background-color: #020617;
 
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 22px;
       overflow: hidden;
 
@@ -226,7 +227,7 @@
       height: 18px;
 
       background: rgba(239, 68, 68, 0.88);
-      border: 2px solid rgba(255,255,255,0.7);
+      border: 2px solid rgba(255,255,255,0.75);
       border-radius: 50%;
 
       transform: translate(-50%, -50%);
@@ -332,7 +333,7 @@
       }
 
       .heatmap-area {
-        height: 300px;
+        min-height: 420px;
       }
     }
   </style>
