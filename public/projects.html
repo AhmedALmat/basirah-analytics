@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Basirah AI | المشاريع</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Cairo", sans-serif;
+      background:
+        radial-gradient(circle at top right, rgba(56,189,248,0.14), transparent 28%),
+        radial-gradient(circle at bottom left, rgba(99,102,241,0.13), transparent 36%),
+        #030712;
+      color: #f8fafc;
+      min-height: 100vh;
+    }
+
+    .navbar {
+      padding: 18px 42px;
+      background: rgba(3,7,18,0.88);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      backdrop-filter: blur(16px);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      direction: ltr;
+      font-size: 24px;
+      font-weight: 800;
+      color: #38bdf8;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: #cbd5e1;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .container {
+      max-width: 1250px;
+      margin: auto;
+      padding: 34px;
+    }
+
+    .hero {
+      background:
+        linear-gradient(135deg, rgba(56,189,248,0.12), rgba(79,70,229,0.10)),
+        rgba(255,255,255,0.045);
+      border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 26px;
+      padding: 30px;
+      margin-bottom: 24px;
+      box-shadow: 0 18px 55px rgba(0,0,0,0.24);
+    }
+
+    .badge {
+      display: inline-block;
+      color: #7dd3fc;
+      background: rgba(56,189,248,0.10);
+      border: 1px solid rgba(56,189,248,0.18);
+      padding: 7px 14px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      margin-bottom: 14px;
+    }
+
+    .hero h1 {
+      margin: 0 0 10px;
+      font-size: 28px;
+      line-height: 1.7;
+    }
+
+    .hero p {
+      margin: 0;
+      color: #cbd5e1;
+      line-height: 2;
+      font-size: 14px;
+      max-width: 850px;
+    }
+
+    .top-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 22px;
+    }
+
+    .top-actions h2 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .create-btn {
+      background: linear-gradient(135deg, #38bdf8, #2563eb);
+      color: white;
+      text-decoration: none;
+      padding: 12px 20px;
+      border-radius: 14px;
+      font-weight: 800;
+      box-shadow: 0 14px 35px rgba(37,99,235,0.28);
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 18px;
+    }
+
+    .project-card {
+      background: rgba(255,255,255,0.045);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 24px;
+      padding: 22px;
+      box-shadow: 0 16px 42px rgba(0,0,0,0.18);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .project-card::before {
+      content: "";
+      position: absolute;
+      top: 22px;
+      right: 0;
+      width: 4px;
+      height: 64px;
+      background: #38bdf8;
+      border-radius: 10px 0 0 10px;
+    }
+
+    .project-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 12px;
+      color: #86efac;
+      background: rgba(34,197,94,0.10);
+      border: 1px solid rgba(34,197,94,0.18);
+      padding: 5px 10px;
+      border-radius: 999px;
+      margin-bottom: 14px;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #22c55e;
+      box-shadow: 0 0 14px rgba(34,197,94,0.9);
+    }
+
+    .project-card h3 {
+      margin: 0 0 8px;
+      font-size: 18px;
+      color: #ffffff;
+    }
+
+    .project-card p {
+      color: #94a3b8;
+      margin: 0 0 18px;
+      line-height: 1.8;
+      font-size: 13px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .stat {
+      background: rgba(15,23,42,0.72);
+      border: 1px solid rgba(255,255,255,0.07);
+      padding: 12px;
+      border-radius: 15px;
+      text-align: center;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 18px;
+      color: #ffffff;
+      margin-bottom: 3px;
+    }
+
+    .stat span {
+      font-size: 11px;
+      color: #94a3b8;
+    }
+
+    .project-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .primary-link,
+    .secondary-link {
+      flex: 1;
+      text-align: center;
+      text-decoration: none;
+      padding: 11px 14px;
+      border-radius: 13px;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .primary-link {
+      background: linear-gradient(135deg, #38bdf8, #2563eb);
+      color: #ffffff;
+    }
+
+    .secondary-link {
+      background: rgba(255,255,255,0.05);
+      color: #cbd5e1;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .setup-card {
+      margin-top: 24px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 24px;
+      padding: 22px;
+    }
+
+    .setup-card h2 {
+      margin: 0 0 10px;
+      font-size: 18px;
+    }
+
+    .code-box {
+      direction: ltr;
+      text-align: left;
+      background: #020617;
+      border: 1px solid rgba(255,255,255,0.09);
+      color: #7dd3fc;
+      padding: 16px;
+      border-radius: 16px;
+      overflow-x: auto;
+      font-size: 13px;
+      margin-top: 14px;
+    }
+
+    @media (max-width: 700px) {
+      .navbar {
+        padding: 18px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+      }
+
+      .container {
+        padding: 20px;
+      }
+
+      .top-actions {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .stats {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav class="navbar">
+    <div class="logo">Basirah AI</div>
+
+    <div class="nav-links">
+      <a href="/index.html">الرئيسية</a>
+      <a href="/test-site.html">الديمو</a>
+      <a href="/dashboard.html">لوحة التحكم</a>
+    </div>
+  </nav>
+
+  <main class="container">
+
+    <section class="hero">
+      <div class="badge">Project Workspace</div>
+      <h1>مشاريعك في Basirah AI</h1>
+      <p>
+        أنشئ مشروعًا لكل موقع أو متجر، واربطه بكود تتبع مستقل، ثم راقب سلوك المستخدمين
+        من لوحة تحكم واحدة تشمل Heatmap، Funnel، تنبيهات ذكية، وتوصيات تحسين.
+      </p>
+    </section>
+
+    <div class="top-actions">
+      <h2>المشاريع الحالية</h2>
+      <a href="/test-site.html" class="create-btn">+ إنشاء مشروع تجريبي</a>
+    </div>
+
+    <section class="projects-grid">
+
+      <div class="project-card">
+        <div class="project-status">
+          <span class="dot"></span>
+          نشط الآن
+        </div>
+
+        <h3>متجر Basirah التجريبي</h3>
+        <p>
+          مشروع تجريبي لعرض تتبع النقرات، مسار العميل، مؤشرات الإحباط، ورحلة المستخدم.
+        </p>
+
+        <div class="stats">
+          <div class="stat">
+            <strong>Demo</strong>
+            <span>النوع</span>
+          </div>
+
+          <div class="stat">
+            <strong>store_001</strong>
+            <span>Project ID</span>
+          </div>
+
+          <div class="stat">
+            <strong>Live</strong>
+            <span>الحالة</span>
+          </div>
+        </div>
+
+        <div class="project-actions">
+          <a href="/dashboard.html" class="primary-link">فتح التحليلات</a>
+          <a href="/test-site.html" class="secondary-link">فتح المتجر</a>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-status">
+          <span class="dot"></span>
+          جاهز للإعداد
+        </div>
+
+        <h3>مشروع عميل جديد</h3>
+        <p>
+          قالب جاهز لاستخدامه مع أول متجر حقيقي. لاحقًا سيتم ربطه بحساب العميل وبياناته.
+        </p>
+
+        <div class="stats">
+          <div class="stat">
+            <strong>New</strong>
+            <span>النوع</span>
+          </div>
+
+          <div class="stat">
+            <strong>client_001</strong>
+            <span>Project ID</span>
+          </div>
+
+          <div class="stat">
+            <strong>Setup</strong>
+            <span>الحالة</span>
+          </div>
+        </div>
+
+        <div class="project-actions">
+          <a href="/dashboard.html" class="primary-link">معاينة اللوحة</a>
+          <a href="#tracking-code" class="secondary-link">كود التتبع</a>
+        </div>
+      </div>
+
+    </section>
+
+    <section class="setup-card" id="tracking-code">
+      <h2>كود التتبع التجريبي</h2>
+      <p style="color:#94a3b8; line-height:1.9; margin:0;">
+        هذا هو الكود الذي يمكن وضعه لاحقًا داخل أي موقع عميل. حالياً يستخدم مشروع المتجر التجريبي.
+      </p>
+
+      <div class="code-box">
+&lt;script src="https://YOUR-DOMAIN.com/tracker.js" data-project-id="store_001"&gt;&lt;/script&gt;
+      </div>
+    </section>
+
+  </main>
+
+</body>
+</html>
