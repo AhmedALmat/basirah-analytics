@@ -366,12 +366,14 @@
       const cleanName =
         name
           .trim()
+          .replace(/[^\w\s]/gi, "")
           .replace(/\s+/g, "_")
-          .replace(/[^\u0600-\u06FFa-zA-Z0-9_]/g, "");
+          .toLowerCase();
 
       const projectId =
         cleanName +
         "_" +
+  Date.now().toString().slice(-4);
         Date.now().toString().slice(-4);
 
       document.getElementById("resultBox").style.display = "block";
