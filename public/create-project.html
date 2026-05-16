@@ -379,10 +379,8 @@
       document.getElementById("projectIdText").innerText =
         "Project ID: " + projectId;
 
-      document.getElementById("trackerCode").textContent =
-      '<script src="https://basirah-analytics.onrender.com/tracker.js" data-project-id="' +
-      projectId +
-      '"><\\/script>';
+      document.getElementById("trackerCode").innerText =
+      `<script src="https://basirah-analytics.onrender.com/tracker.js" data-project-id="${projectId}"><\/script>`;
       
 
       document.getElementById("dashboardLink").href =
