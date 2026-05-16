@@ -363,23 +363,29 @@
         return;
       }
 
-      const projectId =
+      const cleanName =
         name
+          .trim()
           .toLowerCase()
           .replace(/\s+/g, "_")
-          .replace(/[^\w]/g, "") +
+          .replace(/[^\w]/g, "");
+
+      const projectId =
+        cleanName +
         "_" +
-        Math.floor(Math.random() * 1000);
+        Date.now().toString().slice(-4);
 
       document.getElementById("resultBox").style.display = "block";
 
       document.getElementById("projectIdText").innerText =
         "Project ID: " + projectId;
 
-      document.getElementById("trackerCode").innerText =
-      `<script src="https://basirah-analytics.onrender.com/tracker.js"
-      data-project-id="${projectId}">
+      document.getElementById("trackerCode").textContent =
+      `<script
+        src="https://basirah-analytics.onrender.com/tracker.js"
+        data-project-id="${projectId}">
       <\/script>`;
+      
 
       document.getElementById("dashboardLink").href =
         "/dashboard.html?project=" + projectId;
