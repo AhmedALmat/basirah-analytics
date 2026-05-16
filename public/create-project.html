@@ -363,17 +363,9 @@
         return;
       }
 
-      const cleanName =
-        name
-          .trim()
-          .replace(/[^\w\s]/gi, "")
-          .replace(/\s+/g, "_")
-          .toLowerCase();
-
       const projectId =
-        cleanName +
-        "_" +
-        Date.now().toString().slice(-4);
+        "project_" +
+        Date.now().toString().slice(-6);
         
 
       document.getElementById("resultBox").style.display = "block";
